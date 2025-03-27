@@ -1,0 +1,28 @@
+/* Arquivo CSS para estilização */
+.yellow-bg {
+    background-color: #ffcc00;
+    padding: 10px;
+    border-radius: 5px;
+    color: #000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.service-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.service-container img {
+    max-width: 300px;  /* Imagem maior */
+    max-height: 200px;
+    margin-top: 10px;
+}
+
+.service-info {
+    margin-bottom: 10px;
+}
