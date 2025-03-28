@@ -88,6 +88,9 @@
                     </select>
                 </div>
 
+                <input type="hidden" name="id_servico" value="<?= $id_servico ?>">
+
+
                 <!-- Região do serviço -->
                 <div class="mb-3">
                     <label for="regiao" class="form-label">Região</label>

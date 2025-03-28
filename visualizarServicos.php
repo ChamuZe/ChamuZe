@@ -43,10 +43,16 @@ $result = $conn->query($sql);
 
                         <div class="card-footer bg-transparent">
                             <form method="POST" action="deleteServico.php" class="d-inline">
-                                <input type="hidden" name="id_servico" value="<?= $row['id_servico'] ?>">
+                                <input type="hidden" name="id_servico2" value="<?= $row['id_servico'] ?>">
                                 <button type="submit" class="btn btn-danger btn-sm" 
                                     onclick="return confirm('Tem certeza que deseja excluir este serviço?')">
                                     <i class="bi bi-trash"></i> Excluir
+                                </button>
+                            </form>
+                            <form method="POST" action="updateServico.php" class="d-inline">
+                                <input type="hidden" name="id_servico1" value="<?= $row['id_servico'] ?>">
+                                <button type="submit" class="btn btn-danger btn-sm" style="background-color: #ffcc00; color:black;" >
+                                    <i class="bi bi-trash"></i> Alterar
                                 </button>
                             </form>
                         </div>

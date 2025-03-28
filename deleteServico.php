@@ -3,7 +3,7 @@ include 'conexao.php';
 $conn = conectaDB();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id_servico = $_POST['id_servico'];
+    $id_servico = $_POST['id_servico2'];
     
     $sql = "DELETE FROM servicos WHERE id_servico = ?";
     $stmt = $conn->prepare($sql);
