@@ -1,3 +1,9 @@
+<?php
+session_start();
+if (!(isset($_SESSION['usuario']['tipo_usuario'])) && $_SESSION['usuario']['tipo_usuario'] == "solicitante"){
+    header("Location: index.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -9,7 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <?php include __DIR__ . "/header.php";?>
+    <?php include __DIR__ . "/header/header.php";?>
 
     <main class="d-flex flex-column justify-content-center align-items-center vh-100 bg-light text-center">
         <h3 class="display-3 mb-4">Seu serviço doméstico a um clique de distância.</h3>
