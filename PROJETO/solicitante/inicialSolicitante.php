@@ -1,7 +1,7 @@
 <?php
 session_start();
-if (!(isset($_SESSION['usuario']['tipo_perfil'])) && $_SESSION['usuario']['tipo_perfil'] == "solicitante"){
-    header("Location: index.php");
+if ($_SESSION['usuario']['tipo_perfil'] != "solicitante"){
+    header("Location: ../index.php");
 }
 ?>
 <!DOCTYPE html>
@@ -16,7 +16,6 @@ if (!(isset($_SESSION['usuario']['tipo_perfil'])) && $_SESSION['usuario']['tipo_
 </head>
 <body>
     <?php include "../header/header.php";?>
-
     <main class="d-flex flex-column justify-content-center align-items-center vh-100 bg-light text-center">
         <h3 class="display-3 mb-4">Seu serviço doméstico a um clique de distância.</h3>
         <h3 class="mb-4">Chama o Zé!</h3>

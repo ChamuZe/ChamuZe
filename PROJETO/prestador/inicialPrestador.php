@@ -1,5 +1,8 @@
 <?php
 session_start();
+if ($_SESSION['usuario']['tipo_perfil'] != "prestador"){
+    header("Location: ../index.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">

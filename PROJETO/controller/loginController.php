@@ -7,7 +7,7 @@ if (isset($_POST['btn_login'])) {
     $usuario = $login->buscarNoBanco();
     if($usuario == false){
         //Redireciona para o index.php com erro 1
-        header('location:../index.php?erro=1'); //Erro 1 caso o usuário não exista
+        header('location:../login.php?erro=1'); //Erro 1 caso o usuário não exista
     } else {
         if($_POST['email'] == $usuario['email'] AND password_verify($_POST['senha'], $usuario['senha'])){
             $_SESSION['login'] = true;
@@ -27,7 +27,7 @@ if (isset($_POST['btn_login'])) {
             }
             
         } else {
-            header('location:../index.php?erro=2'); //Erro 2 caso o usuário informou os dados incorretamente
+            header('location:../login.php?erro=2'); //Erro 2 caso o usuário informou os dados incorretamente
         }
         
     }
