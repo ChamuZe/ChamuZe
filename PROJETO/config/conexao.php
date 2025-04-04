@@ -1,6 +1,6 @@
 <?php
 function conectaDB(){
-    $host = 'localhost';
+    $host = 'localhost:3307';
     $db_name = 'chamuze';
     $user_name = 'root';
     $password = '';
