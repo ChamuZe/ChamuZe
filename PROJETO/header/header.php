@@ -1,6 +1,6 @@
 <?php
-if (isset($_SESSION['usuario']['tipo_usuario'])){
-    switch ($_SESSION['usuario']['tipo_usuario']){
+if (isset($_SESSION['usuario']['tipo_perfil'])){
+    switch ($_SESSION['usuario']['tipo_perfil']){
         case "solicitante":
             include "headerSolicitante.php";
             break;

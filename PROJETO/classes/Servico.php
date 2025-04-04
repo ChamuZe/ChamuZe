@@ -9,10 +9,10 @@ class Servico {
     }
 
     // Salvar serviço no banco
-    public function salvar($titulo, $descricao, $categoria, $regiao, $caminhoImgServico, $preco){
-        $sql = "INSERT INTO servico (titulo, descricao, categoria, regiao, img_servico, preco) VALUES (?, ?, ?, ?, ?, ?)";
+    public function salvar($titulo, $descricao, $categoria, $regiao, $caminhoImgServico, $preco, $idSolicitante){
+        $sql = "INSERT INTO servico (titulo, descricao, categoria, regiao, img_servico, preco, id_solicitante) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conexao->prepare($sql);
-        $stmt->bind_param("sssssd", $titulo, $descricao, $categoria, $regiao, $caminhoImgServico, $preco);
+        $stmt->bind_param("sssssdd", $titulo, $descricao, $categoria, $regiao, $caminhoImgServico, $preco, $idSolicitante);
         return $stmt->execute();
     }
 
@@ -50,5 +50,15 @@ class Servico {
         $result = $stmt->get_result();
         return $result->fetch_assoc(); // Retorna uma linha associativa
     }
+
+    public function buscarPorUsuario($id_usuario) {
+        $sql = "SELECT * FROM servico WHERE id_solicitante = ?"; // Filtrando pelo usuário
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC); // Retorna todos os serviços do usuário
+    }
+    
 }
 ?>

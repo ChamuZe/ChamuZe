@@ -1,8 +1,6 @@
-# ChamuZe
-
-### Integrantes:
-
-Juliana Aparecida Vecchi
-Leonardo Siemen
-Rafael Augusto de Oliveira Souza
-Caio Filipe Silva
+# ChamuZé
+## Integrantes: 
+- Caio Filipe
+- Juliana Aparecida Vecchi
+- Leonardo Siemens
+- Rafael Augusto de Oliveira Souza

@@ -12,19 +12,16 @@ if (isset($_POST['btn_login'])) {
         if($_POST['email'] == $usuario['email'] AND password_verify($_POST['senha'], $usuario['senha'])){
             $_SESSION['login'] = true;
             $_SESSION['usuario'] = $usuario;
-            $_SESSION['email'] = $usuario['email'];
-            $_SESSION['senha'] = $usuario['senha'];
-            $_SESSION['tipo_usuario'] = $usuario['tipo_usuario'];
-            if (isset($_SESSION['usuario']['tipo_usuario'])){
-                switch ($_SESSION['usuario']['tipo_usuario']){
+            if (isset($_SESSION['usuario']['tipo_perfil'])){
+                switch ($_SESSION['usuario']['tipo_perfil']){
                     case "solicitante":
-                        header('location:../inicialSolicitante.php');
+                        header('location:../solicitante/inicialSolicitante.php');
                         break;
                     case "prestador":
-                        header('location:../inicialPrestador.php');
+                        header('location:../prestador/inicialPrestador.php');
                         break;
                     case "administrador":
-                        header('location:../inicialAdministrador.php');
+                        header('location:../administrador/inicialAdministrador.php');
                         break;
                 }
             }

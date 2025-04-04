@@ -10,39 +10,31 @@ if (isset($_POST['btn_solicitar'])) {
     $extensao = pathinfo($fotoServico['name'], PATHINFO_EXTENSION); // Obtém a extensão do arquivo
     $extensoesPermitidas = ['jpg', 'jpeg', 'png'];
 
-    // Verifica se a extensão é permitida
-    if (!in_array(strtolower($extensao), $extensoesPermitidas)) {
-        echo "<div class=\"alert alert-info\" role=\"alert\">
-                Você só pode enviar arquivos JPG, JPEG ou PNG!
-            </div>";
-    }
-
     // Gera um nome único para a imagem
     $novoNome = uniqid() . "." . $extensao;
-    $caminho = '../uploads/' . $novoNome;
+    $caminho = '../uploads/servicos/' . $novoNome;
 
-    //Cria a instancia servico
-    $servico = new Servico();
+     // Verifica se a extensão é permitida
+     if (!in_array(strtolower($extensao), $extensoesPermitidas)) {
+        header("Location: ../solicitante/solicitarServico.php?erro=1"); //Erro 1: Arquivo no formato não permitido
+     } else {
 
-    // Move o arquivo para o diretório de uploads e salva os dados no banco
-    if (move_uploaded_file($fotoServico['tmp_name'], $caminho)) {
+        //Cria a instancia servico
+        $servico = new Servico();
 
-        // Salva os dados no banco
-        $servico->salvar($_POST['titulo'], $_POST['descricao'], $_POST['categoria'], $_POST['regiao'], $caminho, 0.00);
+        // Move o arquivo para o diretório de uploads e salva os dados no banco
+        if (move_uploaded_file($fotoServico['tmp_name'], $caminho)) {
 
-        echo "<div class=\"alert alert-success\" role=\"alert\">
-                Serviço solicitado com sucesso!
-            </div>";
+            // Salva os dados no banco
+            $servico->salvar($_POST['titulo'], $_POST['descricao'], $_POST['categoria'], $_POST['regiao'], $caminho, $_POST['preco'], $_POST['id_solicitante']);
 
-        // Redireciona para a página de visualização dos serviços
-        header("Location: ../visualizarServicos.php");
-        exit();
+            // Redireciona para a página de visualização dos serviços
+            header("Location: ../solicitante/visualizarServicos.php");
+            exit();
 
-    } else {
-        
-        echo "<div class=\"alert alert-danger\" role=\"alert\">
-                Ops, algo deu errado. O serviço não foi solicitado!
-            </div>";
+        } else {
+            header("Location: ../solicitante/solicitarServico.php?erro=2");//Erro 2: Erro ao salvar no Banco
+        }
     }
 }
 ?>

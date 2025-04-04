@@ -1,5 +1,5 @@
 <?php
-include "../model/Servico.php"; // Incluindo a classe Servico
+include "../classes/Servico.php"; // Incluindo a classe Servico
 
 // Criando a instância da classe Servico
 $servico = new Servico();
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Verificar se foi enviado um novo arquivo de imagem
     if (isset($_FILES['img_servico']) && $_FILES['img_servico']['error'] == UPLOAD_ERR_OK) {
         // Diretório onde a imagem será salva
-        $diretorio = '../uploads/';
+        $diretorio = '../uploads/servicos';
         
         // Obter informações sobre o arquivo
         $arquivoTmp = $_FILES['img_servico']['tmp_name'];
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         move_uploaded_file($arquivoTmp, $caminhoImgServico);
     } else {
         // Caso não haja upload de imagem, manter o caminho da imagem anterior (você pode buscar essa informação da tabela no banco, se necessário)
-        $caminhoImgServico = ''; // Ou pegar a imagem atual de alguma forma se necessário
+        $caminhoImgServico = $_POST['img_servico']; // Ou pegar a imagem atual de alguma forma se necessário
     }
 
     // Chamar o método para atualizar o serviço
@@ -52,11 +52,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Verificar se a atualização foi bem-sucedida
     if ($resultado) {
         // Redirecionar de volta para a página de serviços ou outra página de sua escolha
-        header("Location: ../visualizarServicos.php");
+        header("Location: ../solicitante/visualizarServicos.php");
         exit;
     } else {
         // Se houver algum erro, exibir uma mensagem
-        echo "Erro ao atualizar o serviço.";
+        header("Location: ../solicitante/updateServico.php?erro=1"); //Erro 1: Algo deu errado na atualização
     }
 }
 ?>

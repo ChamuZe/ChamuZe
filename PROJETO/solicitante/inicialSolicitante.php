@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!(isset($_SESSION['usuario']['tipo_usuario'])) && $_SESSION['usuario']['tipo_usuario'] == "solicitante"){
+if (!(isset($_SESSION['usuario']['tipo_perfil'])) && $_SESSION['usuario']['tipo_perfil'] == "solicitante"){
     header("Location: index.php");
 }
 ?>
@@ -15,7 +15,7 @@ if (!(isset($_SESSION['usuario']['tipo_usuario'])) && $_SESSION['usuario']['tipo
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <?php include __DIR__ . "/header/header.php";?>
+    <?php include "../header/header.php";?>
 
     <main class="d-flex flex-column justify-content-center align-items-center vh-100 bg-light text-center">
         <h3 class="display-3 mb-4">Seu serviço doméstico a um clique de distância.</h3>
@@ -23,6 +23,6 @@ if (!(isset($_SESSION['usuario']['tipo_usuario'])) && $_SESSION['usuario']['tipo
         <a href="solicitarServico.php" class="btn btn-warning btn-lg px-5 py-3">Solicitar Serviço</a>
     </main>
 
-    <?php include __DIR__ . "/footer.php";?>
+    <?php include "../footer.php";?>
 </body>
 </html>

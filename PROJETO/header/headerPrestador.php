@@ -2,8 +2,8 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
     <div class="container">
         <!-- Logo -->
-        <a class="navbar-brand" href="inicialSolicitante.php"> <!-- Redireciona para página onde todos os serviços disponiveis são mostrados -->
-            <img src="assets/img/chamuzeLogoComFundoR.png" alt="Logo Chamauze" class="rounded-3" width="240">
+        <a class="navbar-brand" href="../prestador/inicialPrestador.php"> <!-- Redireciona para página onde todos os serviços disponiveis são mostrados -->
+            <img src="../assets/img/chamuzeLogoComFundoR.png" alt="Logo Chamauze" class="rounded-3" width="240">
         </a>
 
         <!-- Botões da Navbar -->
