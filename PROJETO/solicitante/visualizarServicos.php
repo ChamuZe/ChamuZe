@@ -47,6 +47,14 @@ $servicos = $servico->buscarPorUsuario($_SESSION['usuario']['id_usuario']); // A
 
         <h1 class="text-center mt-4 mb-4">Serviços Disponíveis</h1>
 
+        <?php
+        if (count($servicos) < 1){
+            echo "<div class=\"alert alert-info mt-4\" role=\"alert\">
+                            Você não possui serviços cadastrados no momento!
+                            </div>"; 
+        }
+        ?>
+
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 min-vh-100">
             <?php foreach ($servicos as $row): ?>
                 <div class="col">

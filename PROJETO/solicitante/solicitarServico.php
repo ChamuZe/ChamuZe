@@ -35,7 +35,6 @@
                 }
             }
             ?>
-
             <input type="hidden" name="id_solicitante" value="<?php echo $_SESSION['usuario']['id_usuario'];?>">
 
             <!-- Título do serviço -->
