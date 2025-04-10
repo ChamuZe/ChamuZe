@@ -11,7 +11,7 @@
             <a class="btn btn-outline-warning me-2" href="../solicitante/visualizarPropostas.php">Propostas</a>
             <a class="btn btn-outline-warning me-2" href="../solicitante/visualizarServicos.php">Meus Serviços</a>
             <a class="btn btn-outline-warning me-2" href="#">Bate-papo</a>
-            <a class="btn btn-warning" href="#">Perfil</a>
+            <a class="btn btn-warning" href="../perfilUsuario.php">Perfil</a>
         </div>
     </div>
 </nav>

@@ -36,7 +36,6 @@
             }
             ?>
             <input type="hidden" name="id_solicitante" value="<?php echo $_SESSION['usuario']['id_usuario'];?>">
-
             <!-- Título do serviço -->
             <div class="mb-3">
                 <label for="titulo" class="form-label">Título do Serviço</label>

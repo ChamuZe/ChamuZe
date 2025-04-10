@@ -25,84 +25,94 @@ $servicos = $servico->buscarPorUsuario($_SESSION['usuario']['id_usuario']); // A
 <body class="bg-light vh-100">
     <?php include "../header/header.php"; ?>
 
-    <main class="container">
-
+    <main class="container flex-grow-1 py-4 vh-100">
     <?php
-            //Exebição dos erros
-                if (isset($_GET['erro'])){
-                    switch ($_GET['erro']){
-                        case 0:
-                            echo "<div class=\"alert alert-success alert-dismissible fade show mt-4\" role=\"alert\">
-                            O servico foi excluído com sucesso!
-                            </div>";
-                            break;
-                        case 1: 
-                            echo "<div class=\"alert alert-danger mt-4\" role=\"alert\">
+        if (isset($_GET['erro'])) {
+            switch ($_GET['erro']) {
+                case 0:
+                    echo '<div class="alert alert-success alert-dismissible fade show mt-4" role="alert">
+                            O serviço foi excluído com sucesso!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                          </div>';
+                    break;
+                case 1:
+                    echo '<div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                             Ops, algo deu errado. O serviço não foi excluído!
-                            </div>";
-                            break;
-                }
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                          </div>';
+                    break;
+            }
+        }
+    ?>
+
+    <h1 class="text-center mt-4 mb-4">Serviços Disponíveis</h1>
+
+    <?php if (count($servicos) < 1): ?>
+        <div class="alert alert-info mt-4" role="alert">
+            Você não possui serviços cadastrados no momento!
+        </div>
+    <?php endif; ?>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+        <?php foreach ($servicos as $row): 
+            if($row['status_servico'] == "aceito"){
+                $heaerCard = "card-header bg-success-subtle d-flex justify-content-between";
+                $letraCard = "block";
+            } else {
+                $heaerCard = "card-header d-flex";
+                $letraCard = "none";
             }
             ?>
-
-        <h1 class="text-center mt-4 mb-4">Serviços Disponíveis</h1>
-
-        <?php
-        if (count($servicos) < 1){
-            echo "<div class=\"alert alert-info mt-4\" role=\"alert\">
-                            Você não possui serviços cadastrados no momento!
-                            </div>"; 
-        }
-        ?>
-
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 min-vh-100">
-            <?php foreach ($servicos as $row): ?>
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <!-- Cabeçalho do Card com o Título -->
-                        <div class="card-header">
-                            <h5 class="card-title mb-0"><?= $row['titulo'] ?></h5>
-                        </div>
-
-                        <!-- Corpo do Card com Imagem e Informações -->
-                        <div class="card-body d-flex">
-                            <!-- Lado Esquerdo: Imagem -->
-                            <div class="flex-shrink-0 me-3">
-                                <img src="<?= $row['img_servico'] ?>" class="card-img-top" alt="Imagem do Serviço" style="width: 150px; height: 150px; object-fit: cover;">
-                            </div>
-                            
-                            <!-- Lado Direito: Informações Textuais -->
-                            <div class="flex-grow-1">
-                                <p class="text-muted mb-1 small"><strong>Categoria:</strong> <?= $row['categoria'] ?></p>
-                                <p class="text-muted mb-1 small"><strong>Região:</strong> <?= $row['regiao'] ?></p>
-                                <p class="card-text small"><?= $row['descricao'] ?></p>
-
-                                <!-- Preço com Destaque -->
-                                <p class="fw-bold text-warning mb-3" style="font-size: 1.1em;"><strong>Preço:</strong> R$ <?= number_format($row['preco'], 2, ',', '.') ?></p>
-                            </div>
-                        </div>
-
-                        <!-- Rodapé do Card com Botões de Editar e Excluir -->
-                        <div class="card-footer bg-transparent d-flex justify-content-end">
-                            <form method="POST" action="updateServico.php" class="d-inline me-2">
-                                <input type="hidden" name="id_servico" value="<?= $row['id_servico'] ?>">
-                                <button type="submit" name="btn-editar" class="btn btn-primary btn-sm"> <!-- Botão de editar azul -->
-                                    <i class="bi bi-pencil"></i> Editar
-                                </button>
-                            </form>
-                            <form method="POST" action="../controller/deleteServicoController.php" class="d-inline">
-                                <input type="hidden" name="id_servico" value="<?= $row['id_servico'] ?>">
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este serviço?')">
-                                    <i class="bi bi-trash"></i> Excluir
-                                </button>
-                            </form>
-
+            <div class="col">
+                <div class="card shadow-sm h-100">
+                    <!-- Cabeçalho do Card -->
+                    <div class="<?= $heaerCard?>">
+                        <h5 class="card-title mb-0"><?= $row['titulo'] ?></h5>
+                        <div style = "display:<?=$letraCard?>">
+                        <i class="bi bi-check2-circle"></i> Serviço Aceito
                         </div>
                     </div>
+
+                    <!-- Corpo do Card -->
+                    <div class="card-body d-flex flex-column flex-md-row">
+                        <!-- Imagem -->
+                        <div class="flex-shrink-0 me-md-3 mb-3 mb-md-0 text-center">
+                            <img src="<?= $row['img_servico'] ?>" class="img-fluid rounded" alt="Imagem do Serviço" style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                        </div>
+
+                        <!-- Texto -->
+                        <div class="flex-grow-1">
+                            <p class="text-muted mb-1 small"><strong>Categoria:</strong> <?= $row['categoria'] ?></p>
+                            <p class="text-muted mb-1 small"><strong>Região:</strong> <?= $row['local_servico'] ?></p>
+                            <p class="card-text small"><?= $row['descricao'] ?></p>
+                            <p class="text-muted mb-2 small"><strong>Disponibilidade Serviço:</strong> <?= $row['status_servico'] ?></p>
+                            <p class="fw-bold text-success mb-0" style="font-size: 1.1em;">
+                                <i class="bi bi-currency-dollar"></i> R$: <?= $row['preco'] ?>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Rodapé com Botões -->
+                    <div class="card-footer d-flex flex-wrap justify-content-end gap-2">
+                        <form method="POST" action="updateServico.php" class="d-inline">
+                            <input type="hidden" name="id_servico" value="<?= $row['id_servico'] ?>">
+                            <button type="submit" name="btn-editar" class="btn btn-primary btn-sm">
+                                <i class="bi bi-pencil"></i> Editar
+                            </button>
+                        </form>
+                        <form method="POST" action="../controller/deleteServicoController.php" class="d-inline">
+                            <input type="hidden" name="id_servico" value="<?= $row['id_servico'] ?>">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este serviço?')">
+                                <i class="bi bi-trash"></i> Excluir
+                            </button>
+                        </form>
+                    </div>
                 </div>
-            <?php endforeach; ?>
-        </div>
-    </main>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</main>
+
 
     <?php include "../footer.php"; ?>
 </body>

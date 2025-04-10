@@ -9,7 +9,7 @@
         <!-- Botões da Navbar -->
         <div class="d-flex">
             <a class="btn btn-outline-warning me-2" href="#">Bate-papo</a> <!-- Redireciona para o Chat bate papo -->
-            <a class="btn btn-warning" href="#">Perfil</a> <!-- Redireciona para o próprio perfil -->
+            <a class="btn btn-warning" href="../perfilUsuario.php">Perfil</a> <!-- Redireciona para o próprio perfil -->
         </div>
     </div>
 </nav>

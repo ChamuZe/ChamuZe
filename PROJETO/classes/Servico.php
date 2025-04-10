@@ -1,6 +1,7 @@
 <?php
 class Servico {
     private $conexao;
+    private $status = "disponivel";
 
     public function __construct(){
         // Ajustando o caminho para incluir o arquivo de conexão corretamente
@@ -10,7 +11,7 @@ class Servico {
 
     // Salvar serviço no banco
     public function salvar($titulo, $descricao, $categoria, $regiao, $caminhoImgServico, $preco, $idSolicitante){
-        $sql = "INSERT INTO servico (titulo, descricao, categoria, regiao, img_servico, preco, id_solicitante) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO servico (titulo, descricao, categoria, local_servico, img_servico, preco, id_solicitante) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conexao->prepare($sql);
         $stmt->bind_param("sssssdd", $titulo, $descricao, $categoria, $regiao, $caminhoImgServico, $preco, $idSolicitante);
         return $stmt->execute();
@@ -26,7 +27,7 @@ class Servico {
 
     // Atualizar serviço pelo ID
     public function atualizar($id, $titulo, $descricao, $categoria, $regiao, $caminhoImgServico, $preco){
-        $sql = "UPDATE servico SET titulo = ?, descricao = ?, categoria = ?, regiao = ?, img_servico = ?, preco = ? WHERE id_servico = ?";
+        $sql = "UPDATE servico SET titulo = ?, descricao = ?, categoria = ?, local_servico = ?, img_servico = ?, preco = ? WHERE id_servico = ?";
         $stmt = $this->conexao->prepare($sql);
         $stmt->bind_param("sssssdi", $titulo, $descricao, $categoria, $regiao, $caminhoImgServico, $preco, $id);
         return $stmt->execute();
