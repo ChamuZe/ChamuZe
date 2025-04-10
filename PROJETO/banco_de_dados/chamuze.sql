@@ -16,78 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `administrador`
+-- Table structure for table `endereco`
 --
 
-DROP TABLE IF EXISTS `administrador`;
+DROP TABLE IF EXISTS `endereco`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `administrador` (
-  `id_administrador` int(11) NOT NULL,
-  PRIMARY KEY (`id_administrador`),
-  CONSTRAINT `administrador_ibfk_1` FOREIGN KEY (`id_administrador`) REFERENCES `usuario` (`id_usuario`)
+CREATE TABLE `endereco` (
+  `id_endereco` int(11) NOT NULL AUTO_INCREMENT,
+  `estado` varchar(100) NOT NULL,
+  `cidade` varchar(100) NOT NULL,
+  `bairro` varchar(150) NOT NULL,
+  `logradouro` varchar(150) NOT NULL,
+  `numero_casa` int(11) NOT NULL,
+  `cep` varchar(50) NOT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_endereco`),
+  KEY `id_usuario` (`id_usuario`),
+  CONSTRAINT `endereco_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `administrador`
+-- Dumping data for table `endereco`
 --
 
-LOCK TABLES `administrador` WRITE;
-/*!40000 ALTER TABLE `administrador` DISABLE KEYS */;
-/*!40000 ALTER TABLE `administrador` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `administrador_prestador`
---
-
-DROP TABLE IF EXISTS `administrador_prestador`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `administrador_prestador` (
-  `id_administrador` int(11) NOT NULL,
-  `id_prestador` int(11) NOT NULL,
-  PRIMARY KEY (`id_administrador`,`id_prestador`),
-  KEY `id_prestador` (`id_prestador`),
-  CONSTRAINT `administrador_prestador_ibfk_1` FOREIGN KEY (`id_administrador`) REFERENCES `administrador` (`id_administrador`),
-  CONSTRAINT `administrador_prestador_ibfk_2` FOREIGN KEY (`id_prestador`) REFERENCES `prestador` (`id_prestador`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `administrador_prestador`
---
-
-LOCK TABLES `administrador_prestador` WRITE;
-/*!40000 ALTER TABLE `administrador_prestador` DISABLE KEYS */;
-/*!40000 ALTER TABLE `administrador_prestador` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `administrador_solicitante`
---
-
-DROP TABLE IF EXISTS `administrador_solicitante`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `administrador_solicitante` (
-  `id_administrador` int(11) NOT NULL,
-  `id_solicitante` int(11) NOT NULL,
-  PRIMARY KEY (`id_administrador`,`id_solicitante`),
-  KEY `id_solicitante` (`id_solicitante`),
-  CONSTRAINT `administrador_solicitante_ibfk_1` FOREIGN KEY (`id_administrador`) REFERENCES `administrador` (`id_administrador`),
-  CONSTRAINT `administrador_solicitante_ibfk_2` FOREIGN KEY (`id_solicitante`) REFERENCES `solicitante` (`id_solicitante`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `administrador_solicitante`
---
-
-LOCK TABLES `administrador_solicitante` WRITE;
-/*!40000 ALTER TABLE `administrador_solicitante` DISABLE KEYS */;
-/*!40000 ALTER TABLE `administrador_solicitante` ENABLE KEYS */;
+LOCK TABLES `endereco` WRITE;
+/*!40000 ALTER TABLE `endereco` DISABLE KEYS */;
+/*!40000 ALTER TABLE `endereco` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -130,9 +86,9 @@ DROP TABLE IF EXISTS `prestador`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `prestador` (
   `id_prestador` int(11) NOT NULL,
-  `cpf` varchar(11) NOT NULL,
+  `cnpj` varchar(14) NOT NULL,
   `img_rg` varchar(255) NOT NULL,
-  `chave_pix` varchar(100) NOT NULL,
+  `chave_pix` varchar(255) NOT NULL,
   `status_avaliacao` enum('aprovado','reprovado') NOT NULL,
   PRIMARY KEY (`id_prestador`),
   CONSTRAINT `prestador_ibfk_1` FOREIGN KEY (`id_prestador`) REFERENCES `usuario` (`id_usuario`)
@@ -145,6 +101,7 @@ CREATE TABLE `prestador` (
 
 LOCK TABLES `prestador` WRITE;
 /*!40000 ALTER TABLE `prestador` DISABLE KEYS */;
+INSERT INTO `prestador` VALUES (2,'12345678000199','prestador_rg.jpg','prestador_pix@bank.com','aprovado'),(4,'12345678000199','prestador2_rg.jpg','prestador2_pix@bank.com','aprovado');
 /*!40000 ALTER TABLE `prestador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -158,18 +115,19 @@ DROP TABLE IF EXISTS `proposta`;
 CREATE TABLE `proposta` (
   `id_proposta` int(11) NOT NULL AUTO_INCREMENT,
   `id_servico` int(11) NOT NULL,
-  `valor` float NOT NULL,
-  `mensagem` text NOT NULL,
-  `id_solicitante` int(11) DEFAULT NULL,
   `id_prestador` int(11) DEFAULT NULL,
+  `id_solicitante` int(11) DEFAULT NULL,
+  `valor_proposta` decimal(10,2) NOT NULL,
+  `justificativa` text NOT NULL,
   PRIMARY KEY (`id_proposta`),
-  KEY `id_servico` (`id_servico`),
   KEY `id_solicitante` (`id_solicitante`),
   KEY `id_prestador` (`id_prestador`),
+  KEY `id_servico` (`id_servico`),
+  CONSTRAINT `id_servico` FOREIGN KEY (`id_servico`) REFERENCES `servico` (`id_servico`) ON DELETE CASCADE,
   CONSTRAINT `proposta_ibfk_1` FOREIGN KEY (`id_servico`) REFERENCES `servico` (`id_servico`),
   CONSTRAINT `proposta_ibfk_2` FOREIGN KEY (`id_solicitante`) REFERENCES `solicitante` (`id_solicitante`),
   CONSTRAINT `proposta_ibfk_3` FOREIGN KEY (`id_prestador`) REFERENCES `prestador` (`id_prestador`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -178,6 +136,7 @@ CREATE TABLE `proposta` (
 
 LOCK TABLES `proposta` WRITE;
 /*!40000 ALTER TABLE `proposta` DISABLE KEYS */;
+INSERT INTO `proposta` VALUES (9,0,2,3,80.00,'Como preciso me locomover até sua casa o custo de descolamento seria 5 reais adicionais.'),(10,0,4,3,90.00,'Por conta dos curos adicionais preciso cobrar 15 reais acima do valor proprorto por você.'),(11,0,4,3,100.00,'Por conta dos curos adicionais preciso cobrar 15 reais acima do valor proprorto por você.'),(20,6,4,3,90.00,'Por conta dos curos adicionais preciso cobrar 15 reais acima do valor proprorto por você.'),(23,7,4,3,100.00,'Por conta dos curos adicionais preciso cobrar 15 reais acima do valor proprorto por você.');
 /*!40000 ALTER TABLE `proposta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -194,8 +153,8 @@ CREATE TABLE `servico` (
   `titulo` varchar(255) NOT NULL,
   `img_servico` varchar(255) NOT NULL,
   `categoria` varchar(255) NOT NULL,
-  `status_servico` enum('aceito','disponivel') NOT NULL,
-  `regiao` varchar(100) NOT NULL,
+  `status_servico` enum('disponivel','aceito') DEFAULT 'disponivel',
+  `local_servico` varchar(100) NOT NULL,
   `preco` decimal(10,2) NOT NULL,
   `id_solicitante` int(11) DEFAULT NULL,
   `id_prestador` int(11) DEFAULT NULL,
@@ -204,7 +163,7 @@ CREATE TABLE `servico` (
   KEY `id_prestador` (`id_prestador`),
   CONSTRAINT `servico_ibfk_1` FOREIGN KEY (`id_solicitante`) REFERENCES `solicitante` (`id_solicitante`),
   CONSTRAINT `servico_ibfk_2` FOREIGN KEY (`id_prestador`) REFERENCES `prestador` (`id_prestador`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -213,7 +172,7 @@ CREATE TABLE `servico` (
 
 LOCK TABLES `servico` WRITE;
 /*!40000 ALTER TABLE `servico` DISABLE KEYS */;
-INSERT INTO `servico` VALUES (1,'Corte de Grama','Corte de Grama','../uploads/servicos/67eede8cdc7db.jpg','jardinagem','aceito','alto_boqueirao',75.00,NULL,NULL),(2,'header(\"Location: ../solicitante/solicitarServico.php?erro=2\");//Erro 2: Erro ao salvar no Banco','Corte de Grama','../uploads/servicos/67eee1b0c52e0.jpg','encanamento','aceito','bacacheri',20.00,NULL,NULL),(3,'Corte de Grama 2','Corte de Grama','../uploads/servicos/67eee1e9019ef.pdf','jardinagem','aceito','bacacheri',50.00,NULL,NULL),(4,'Corte de Grama','Corte de Grama','../uploads/servicos/67eee241b5e1e.drawio','encanamento','aceito','augusta',23.00,NULL,NULL),(5,'Conserto de telhado','Conserto de telhado','../uploads/servicos/67eee3a7b630c.jpg','construcao','aceito','lamenha_pequena',100.00,NULL,NULL),(6,'Corte de Grama','1','boqueirao','Corte de Grama','aceito','jardinagem',0.00,NULL,NULL),(8,'Preciso de alguém para cortar a minha grama!','Corte de Grama','../uploads/servicos/67eee5f067590.jpg','jardinagem','aceito','alto_boqueirao',15.00,1,NULL),(9,'Conserto de telhado','Conserto de telhado','../uploads/servicos/67eee6e498378.jpg','construcao','aceito','cachoeira',450.00,1,NULL);
+INSERT INTO `servico` VALUES (0,'Preciso cortar minha grama com urgência!','Corte de Grama','../uploads/servicos/67f67112d0788.jpg','jardinagem','aceito','abranches',100.00,3,2),(6,'Conserto de telhado','Conserto de telhado','../uploads/servicos/67f7b0257f168.jpg','encanamento','disponivel','butiatuvinha',50.00,3,NULL),(7,'deeae','Blá Blá Blá Blá','../uploads/servicos/67f7b4eccb783.jpg','encanamento','aceito','cabral',123.00,3,4);
 /*!40000 ALTER TABLE `servico` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,7 +196,7 @@ CREATE TABLE `solicitante` (
 
 LOCK TABLES `solicitante` WRITE;
 /*!40000 ALTER TABLE `solicitante` DISABLE KEYS */;
-INSERT INTO `solicitante` VALUES (1);
+INSERT INTO `solicitante` VALUES (3);
 /*!40000 ALTER TABLE `solicitante` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -251,12 +210,18 @@ DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE `usuario` (
   `id_usuario` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(100) NOT NULL,
+  `sobrenome` varchar(150) NOT NULL,
   `email` varchar(150) NOT NULL,
   `senha` varchar(255) NOT NULL,
+  `cpf` varchar(11) NOT NULL,
+  `telefone` varchar(30) NOT NULL,
+  `nacionalidade` varchar(50) NOT NULL,
+  `data_nascimento` date NOT NULL,
   `nota_reputacao` decimal(3,2) NOT NULL,
+  `genero` enum('F','M','O') NOT NULL,
   `tipo_perfil` enum('administrador','prestador','solicitante') NOT NULL,
   PRIMARY KEY (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -265,7 +230,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Solicitante','solicitante@gmail.com','$2y$10$iJsLDgYFSEG6vrb6GidjB.OYPTS1EDOZGPr.7/KJYG8LE0diZyT1e',0.00,'solicitante'),(2,'Prestador','prestador@gmail.com','$2y$10$iJsLDgYFSEG6vrb6GidjB.OYPTS1EDOZGPr.7/KJYG8LE0diZyT1e',0.00,'prestador'),(3,'Administrador','administrador@gmail.com','$2y$10$iJsLDgYFSEG6vrb6GidjB.OYPTS1EDOZGPr.7/KJYG8LE0diZyT1e',0.00,'administrador');
+INSERT INTO `usuario` VALUES (1,'Administrador','Teste','admin@teste.com','$2y$10$iJsLDgYFSEG6vrb6GidjB.OYPTS1EDOZGPr.7/KJYG8LE0diZyT1e','00000000001','11999990001','Brasileiro','1990-01-01',5.00,'O','administrador'),(2,'Prestador','Teste','prestador@teste.com','$2y$10$iJsLDgYFSEG6vrb6GidjB.OYPTS1EDOZGPr.7/KJYG8LE0diZyT1e','00000000002','11999990002','Brasileiro','1992-02-02',4.50,'M','prestador'),(3,'Solicitante','Teste','solicitante@teste.com','$2y$10$iJsLDgYFSEG6vrb6GidjB.OYPTS1EDOZGPr.7/KJYG8LE0diZyT1e','00000000003','11999990003','Brasileiro','1995-03-03',4.80,'F','solicitante'),(4,'Prestador2','Teste2','prestador2@teste.com','$2y$10$iJsLDgYFSEG6vrb6GidjB.OYPTS1EDOZGPr.7/KJYG8LE0diZyT1e','00000000002','11999990002','Brasileiro','1992-02-02',0.00,'M','prestador');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -278,4 +243,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-03 20:11:31
+-- Dump completed on 2025-04-10 18:15:49
