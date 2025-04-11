@@ -1,25 +1,146 @@
 <?php
 class Cadastro{
-    private $nomeUsuario;
-    private $emailUsuario;
-    private $senhaUsuario;
+    private $nome;
+    private $sobrenome;
+    private $email;
+    private $senha;
+    private $cpf;
+    private $nacionalidade;
+    private $telefone;
+    private $dataNascimento;
+    private $genero;
+    private $tipoPerfil;
     private $conexao;
-    private $tipoUsuario;
+    
+    //prestador
+    private $cnpj;
+    private $imgRg;
+    private $chavePix;
 
-    public function __construct($emailUsuario, $senhaUsuario, $tipoUsuario, $nomeUsuario){
+    public function __construct(
+        $nome,
+        $sobrenome,
+        $email,
+        $senha,
+        $cpf,
+        $telefone,
+        $dataNascimento,
+        $genero,
+        $tipoPerfil,
+        $cnpj = null,
+        $imgRg = null,
+        $chavePix = null
+    ) {
         include "../config/conexao.php";
         $this->conexao = conectaDB();
-        $this->emailUsuario = $emailUsuario;
-        $this->senhaUsuario = password_hash($senhaUsuario, PASSWORD_DEFAULT);
-        $this->tipoUsuario = $tipoUsuario;
-        $this->nomeUsuario = $nomeUsuario;
+        $this->nome = $nome;
+        $this->sobrenome = $sobrenome;
+        $this->email = $email;
+        $this->senha = password_hash($senha, PASSWORD_DEFAULT);
+        $this->cpf = $cpf;
+        //revisar o do pq ter nacionalidade...
+        $this->nacionalidade = 'Brasileiro';
+        $this->telefone = $telefone;
+        $this->dataNascimento = $dataNascimento;
+        $this->genero = $genero;
+        $this->tipoPerfil = $tipoPerfil;
+        
+
+        $this->cnpj = $cnpj;
+        $this->imgRg = $imgRg;
+        //fica melhor deixar isso pra inserir na página do perfil dele...
+        $this->chavePix = $chavePix;
     }
 
     public function salvar(){
-        $sql = "INSERT INTO usuario (nome,email,senha,tipo_perfil) VALUES (?, ?, ?, ?)";
+        try {
+            $this->conexao->begin_transaction();
+
+            // Insert into usuario table
+            $sqlUsuario = "INSERT INTO usuario (
+                nome, 
+                sobrenome, 
+                email, 
+                senha, 
+                cpf, 
+                telefone, 
+                nacionalidade, 
+                data_nascimento, 
+                genero, 
+                tipo_perfil
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            
+            $stmtUsuario = $this->conexao->prepare($sqlUsuario);
+            $stmtUsuario->bind_param(
+                "ssssssssss",
+                $this->nome,
+                $this->sobrenome,
+                $this->email,
+                $this->senha,
+                $this->cpf,
+                $this->nacionalidade,
+                $this->telefone,
+                $this->dataNascimento,
+                $this->genero,
+                $this->tipoPerfil
+            );
+            
+            if (!$stmtUsuario->execute()) {
+                throw new Exception("Erro ao salvar usuario: " . $stmtUsuario->error);
+            }
+            
+            $Id = $this->conexao->insert_id;
+            var_dump($Id);
+
+            switch ($this->tipoPerfil) {
+                case 'solicitante':
+                    $this->salvarSolicitante($Id);
+                    break;
+                    
+                case 'prestador':
+                    $this->salvarPrestador($Id);
+                    break;
+            }
+
+            $this->conexao->commit();
+
+        } catch (Exception $e) {
+            $this->conexao->rollback();
+            var_dump($e->getMessage());
+        }
+    }
+
+    public function salvarSolicitante($id){
+        $sql = "INSERT INTO solicitante (id_solicitante) VALUES (?)";
         $stmt = $this->conexao->prepare($sql);
-        $stmt->bind_param("ssss", $this->nomeUsuario, $this->emailUsuario, $this->senhaUsuario, $this->tipoUsuario);
-        return $stmt->execute();
+        $stmt->bind_param("i", $id);
+        
+        if (!$stmt->execute()) {
+            throw new Exception("Erro ao salvar solicitante: " . $stmt->error);
+        }
+    }
+
+    public function salvarPrestador($id){
+        $sql = "INSERT INTO prestador (
+            id_prestador, 
+            cnpj, 
+            img_rg, 
+            chave_pix, 
+            status_avaliacao
+        ) VALUES (?, ?, ?, ?, 'aprovado')";
+        
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bind_param(
+            "isss",
+            $id,
+            $this->cnpj,
+            $this->imgRg,
+            $this->chavePix
+        );
+        
+        if (!$stmt->execute()) {
+            throw new Exception("Erro ao salvar prestador: " . $stmt->error);
+        }
     }
 
     public function buscarNoBanco(){
@@ -28,7 +149,7 @@ class Cadastro{
         $stmt = $this->conexao->prepare($sql); 
     
         // Associa o parâmetro (e-mail) à consulta preparada para evitar SQL Injection
-        $stmt->bind_param("s", $this->emailUsuario); 
+        $stmt->bind_param("s", $this->email); 
     
         // Executa a consulta preparada
         $stmt->execute();

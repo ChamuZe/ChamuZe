@@ -38,6 +38,11 @@ if(isset($_SESSION['login'])){
                         E-mail ou senha incorretos!
                     </div>";
                  }
+                 if(isset($_GET['sucesso'])){
+                    echo "<div class=\"alert alert-primary\">
+                        Cadastrado com sucesso!
+                    </div>";
+                 }
                  ?>
                 <form action="controller/loginController.php" method="POST">
                     <div class="mb-3">
@@ -51,7 +56,7 @@ if(isset($_SESSION['login'])){
                     <button type="submit" class="btn btn-warning w-100 text-dark" name="btn_login">Entrar</button>
                 </form>
                 <div class="text-center mt-3">
-                    <p class="mb-0">Não possui uma conta? <a href="cadastro.php">Cadastre-se</a></p>
+                    <p class="mb-0">Não possui uma conta? <a href="cadastroEscolha.php">Cadastre-se</a></p>
                 </div>
             </div>
         </div>

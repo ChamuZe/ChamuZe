@@ -10,8 +10,7 @@ class Proposta{
     private $conexao; 
 
     public function __construct(){
-        // Ajustando o caminho para incluir o arquivo de conexão corretamente
-        include_once __DIR__ . '/../config/conexao.php'; // Usando __DIR__ para garantir o caminho correto
+        include __DIR__ . '/../config/conexao.php';
         $this->conexao = conectaDB();
 
     }

@@ -19,6 +19,9 @@
 -- Table structure for table `endereco`
 --
 
+CREATE DATABASE IF NOT EXISTS chamuze;
+USE chamuze;
+
 DROP TABLE IF EXISTS `endereco`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -88,13 +91,8 @@ CREATE TABLE `prestador` (
   `id_prestador` int(11) NOT NULL,
   `cnpj` varchar(14) NOT NULL,
   `img_rg` varchar(255) NOT NULL,
-<<<<<<< HEAD:PROJETO/banco_de_dados/DB_Chamuze.sql
   `chave_pix` varchar(100) NOT NULL,
   `status_avaliacao` enum('aprovado','naoverificado') NOT NULL,
-=======
-  `chave_pix` varchar(255) NOT NULL,
-  `status_avaliacao` enum('aprovado','reprovado') NOT NULL,
->>>>>>> 18be255eeabdb3834975e0af45b1458837464dce:PROJETO/banco_de_dados/chamuze.sql
   PRIMARY KEY (`id_prestador`),
   CONSTRAINT `prestador_ibfk_1` FOREIGN KEY (`id_prestador`) REFERENCES `usuario` (`id_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
