@@ -133,7 +133,7 @@ CREATE TABLE `prestador` (
   `cpf` varchar(11) NOT NULL,
   `img_rg` varchar(255) NOT NULL,
   `chave_pix` varchar(100) NOT NULL,
-  `status_avaliacao` enum('aprovado','reprovado') NOT NULL,
+  `status_avaliacao` enum('aprovado','naoverificado') NOT NULL,
   PRIMARY KEY (`id_prestador`),
   CONSTRAINT `prestador_ibfk_1` FOREIGN KEY (`id_prestador`) REFERENCES `usuario` (`id_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

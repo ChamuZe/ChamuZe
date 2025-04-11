@@ -29,7 +29,7 @@ CREATE TABLE prestador (
 	cnpj VARCHAR(14) NOT NULL,
 	img_rg VARCHAR(255) NOT NULL,
 	chave_pix VARCHAR(255) NOT NULL,
-	status_avaliacao ENUM('aprovado','reprovado') NOT NULL
+	status_avaliacao ENUM('aprovado','naoverificado') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Criação da tabela solicitante - Especialização - */

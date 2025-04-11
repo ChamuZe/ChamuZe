@@ -9,7 +9,7 @@
         <!-- Botões da Navbar -->
         <div class="d-flex">
             <a class="btn btn-outline-warning me-2" href="#">Cadastrar ADM</a><!-- Redirecionar para página de cadastro de novo adm -->
-            <a class="btn btn-outline-warning me-2" href="#">Avaliar Prestadores</a><!-- Redirecionar para página de avaliação de prestadores -->
+            <a class="btn btn-outline-warning me-2" href="avaliarPrestadores.php">Avaliar Prestadores</a><!-- Redirecionar para página de avaliação de prestadores -->
             <a class="btn btn-outline-warning me-2" href="#">Gerenciar Serviços</a><!-- Redirecionar para página onde todos os seviços estarão disponiveis para editar/excluir -->
             <a class="btn btn-outline-warning me-2" href="#">Gerenciar usuários</a><!-- Redirecionar para página onde todos os usuários estarão disponiveis para editar/excluir -->
             <a class="btn btn-warning" href="#">Perfil</a>
