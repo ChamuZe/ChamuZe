@@ -1,9 +1,12 @@
 <?php
 function conectaDB(){
-    $host = 'localhost:3307';
-    $db_name = 'chamuze';
-    $user_name = 'root';
-    $password = '';
+    static $conexao = null;
+
+    if ($conexao === null) {
+        $host = 'localhost:3306';
+        $db_name = 'chamuze';
+        $user_name = 'root';
+        $password = '';
 
         $conexao = new mysqli($host, $user_name, $password, $db_name);
 

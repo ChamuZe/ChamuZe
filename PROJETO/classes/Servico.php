@@ -1,6 +1,7 @@
 <?php
 class Servico {
     private $conexao;
+    private $status = "disponivel";
 
     public function __construct(){
         // Ajustando o caminho para incluir o arquivo de conexão corretamente
@@ -10,7 +11,7 @@ class Servico {
 
     // Salvar serviço no banco
     public function salvar($titulo, $descricao, $categoria, $regiao, $caminhoImgServico, $preco, $idSolicitante){
-        $sql = "INSERT INTO servico (titulo, descricao, categoria, regiao, img_servico, preco, id_solicitante) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO servico (titulo, descricao, categoria, local_servico, img_servico, preco, id_solicitante) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conexao->prepare($sql);
         $stmt->bind_param("sssssdd", $titulo, $descricao, $categoria, $regiao, $caminhoImgServico, $preco, $idSolicitante);
         return $stmt->execute();
@@ -26,7 +27,7 @@ class Servico {
 
     // Atualizar serviço pelo ID
     public function atualizar($id, $titulo, $descricao, $categoria, $regiao, $caminhoImgServico, $preco){
-        $sql = "UPDATE servico SET titulo = ?, descricao = ?, categoria = ?, regiao = ?, img_servico = ?, preco = ? WHERE id_servico = ?";
+        $sql = "UPDATE servico SET titulo = ?, descricao = ?, categoria = ?, local_servico = ?, img_servico = ?, preco = ? WHERE id_servico = ?";
         $stmt = $this->conexao->prepare($sql);
         $stmt->bind_param("sssssdi", $titulo, $descricao, $categoria, $regiao, $caminhoImgServico, $preco, $id);
         return $stmt->execute();
@@ -59,6 +60,29 @@ class Servico {
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC); // Retorna todos os serviços do usuário
     }
+
+    public function aceitarServico($id_servico, $id_prestador) {
+        $sql = "UPDATE servico SET id_prestador = ?, status_servico = 'aceito' WHERE id_servico = ?";
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bind_param("ii", $id_prestador, $id_servico);
+        return $stmt->execute();
+    }
+
+    public function buscarServicosPorPrestador($id_prestador) {
+        $sql = "SELECT * FROM servico WHERE id_prestador = ?";
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bind_param("i", $id_prestador);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
     
+    public function inserirProposta($id_servico, $id_prestador, $novo_preco, $mensagem) {
+        $sql = "INSERT INTO proposta (id_servico, id_prestador, novo_preco, mensagem, data_envio)
+                VALUES (?, ?, ?, ?, NOW())";
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bind_param("iids", $id_servico, $id_prestador, $novo_preco, $mensagem);
+        return $stmt->execute();
+    }
 }
 ?>

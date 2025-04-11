@@ -43,7 +43,7 @@ session_start();
                     <button type="submit" class="btn btn-warning w-100 text-dark" name="btn_enviar">Entrar</button>
                 </form>
                 <div class="text-center mt-3">
-                    <p class="mb-0"><a href="index.php">Retornar ao login</a></p>
+                    <p class="mb-0">Já possui cadastro?<a href="index.php">Fazer Login</a></p>
                 </div>
             </div>
         </div>

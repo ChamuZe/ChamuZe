@@ -12,7 +12,7 @@
             <a class="btn btn-outline-warning me-2" href="avaliarPrestadores.php">Avaliar Prestadores</a><!-- Redirecionar para página de avaliação de prestadores -->
             <a class="btn btn-outline-warning me-2" href="#">Gerenciar Serviços</a><!-- Redirecionar para página onde todos os seviços estarão disponiveis para editar/excluir -->
             <a class="btn btn-outline-warning me-2" href="#">Gerenciar usuários</a><!-- Redirecionar para página onde todos os usuários estarão disponiveis para editar/excluir -->
-            <a class="btn btn-warning" href="#">Perfil</a>
+            <a class="btn btn-warning" href="../perfilUsuario.php">Perfil</a>
         </div>
     </div>
 </nav>
