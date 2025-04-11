@@ -1,6 +1,6 @@
 <?php
 function conectaDB(){
-    static $conexao = null; // variável estática mantém o valor entre chamadas
+    static $conexao = null;
 
     if ($conexao === null) {
         $host = 'localhost:3306';
@@ -15,5 +15,5 @@ function conectaDB(){
         }
     }
 
-    return $conexao; // retorna a conexão existente
+    return $conexao;
 }

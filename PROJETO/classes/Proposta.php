@@ -11,9 +11,19 @@ class Proposta{
 
     public function __construct(){
         // Ajustando o caminho para incluir o arquivo de conexão corretamente
-        include __DIR__ . '/../config/conexao.php'; // Usando __DIR__ para garantir o caminho correto
+        include_once __DIR__ . '/../config/conexao.php'; // Usando __DIR__ para garantir o caminho correto
         $this->conexao = conectaDB();
+
     }
+
+    public function enviarProposta($id_servico, $id_prestador, $id_solicitante, $valor_proposta, $justificativa) {
+        $sql = "INSERT INTO proposta (id_servico, id_prestador, id_solicitante, valor_proposta, justificativa)
+                VALUES (?, ?, ?, ?, ?)";
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bind_param("iiids", $id_servico, $id_prestador, $id_solicitante, $valor_proposta, $justificativa);
+        return $stmt->execute();
+    }
+    
 
     public function buscarPropostaPorIdSolicitante($idSolicitante){
         $sql = "SELECT * FROM proposta WHERE id_solicitante = ?";
