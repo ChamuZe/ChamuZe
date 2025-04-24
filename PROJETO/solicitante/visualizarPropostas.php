@@ -8,16 +8,18 @@ $propostas = $proposta->buscarPropostaPorIdSolicitante($_SESSION['usuario']['id_
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChamuZé - Propostas</title>
-    <link rel="shortcut icon" href="imagens/chamuzeFavicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../assets/img/chamuzeFavicon.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="../assets/css/estilo.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
+
 <body class="bg-light vh-100">
     <?php include "../header/header.php"; ?>
 
@@ -65,7 +67,7 @@ $propostas = $proposta->buscarPropostaPorIdSolicitante($_SESSION['usuario']['id_
             foreach ($propostasDisponiveis as $propostaRow) {
                 $servico = $proposta->buscarServicoPorId($propostaRow['id_servico']);
                 $prestador = $proposta->buscarPrestadorPorId($propostaRow['id_prestador']);
-        ?>
+                ?>
                 <div class="col">
                     <div class="card shadow-sm h-100">
                         <div class="card-header">
@@ -74,13 +76,18 @@ $propostas = $proposta->buscarPropostaPorIdSolicitante($_SESSION['usuario']['id_
 
                         <div class="card-body d-flex flex-column flex-md-row">
                             <div class="flex-shrink-0 me-md-3 mb-3 mb-md-0 text-center">
-                                <img src="<?= $servico['img_servico'] ?>" class="img-fluid rounded" alt="Imagem do Serviço" style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                                <img src="<?= $servico['img_servico'] ?>" class="img-fluid rounded" alt="Imagem do Serviço"
+                                    style="max-width: 150px; max-height: 150px; object-fit: cover;">
                             </div>
                             <div class="flex-grow-1">
-                                <p class="text-danger mb-1"><strong>Preço Antigo: R$ <?= number_format($servico['preco'], 2, ',', '.') ?></strong></p>
-                                <p class="text-success mb-1"><strong>Preço Proposto: R$ <?= number_format($propostaRow['valor_proposta'], 2, ',', '.') ?></strong></p>
-                                <p class="card-text small"><strong>Prestador: </strong><?= $prestador['nome'] . " " . $prestador['sobrenome'] ?></p>
-                                <p class="card-text small"><strong>Justificativa: </strong><?= $propostaRow['justificativa'] ?></p>
+                                <p class="text-danger mb-1"><strong>Preço Antigo: R$
+                                        <?= number_format($servico['preco'], 2, ',', '.') ?></strong></p>
+                                <p class="text-success mb-1"><strong>Preço Proposto: R$
+                                        <?= number_format($propostaRow['valor_proposta'], 2, ',', '.') ?></strong></p>
+                                <p class="card-text small"><strong>Prestador:
+                                    </strong><?= $prestador['nome'] . " " . $prestador['sobrenome'] ?></p>
+                                <p class="card-text small"><strong>Justificativa: </strong><?= $propostaRow['justificativa'] ?>
+                                </p>
                             </div>
                         </div>
 
@@ -94,14 +101,15 @@ $propostas = $proposta->buscarPropostaPorIdSolicitante($_SESSION['usuario']['id_
                             </form>
                             <form method="POST" action="../controller/deletePropostaController.php" class="d-inline">
                                 <input type="hidden" name="id_proposta" value="<?= $propostaRow['id_proposta'] ?>">
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir esta proposta?')">
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Tem certeza que deseja excluir esta proposta?')">
                                     <i class="bi bi-trash"></i> Excluir
                                 </button>
                             </form>
                         </div>
                     </div>
                 </div>
-        <?php
+                <?php
             }
             echo "</div>"; // fecha a ROW
         } else {
@@ -115,4 +123,5 @@ $propostas = $proposta->buscarPropostaPorIdSolicitante($_SESSION['usuario']['id_
 
     <?php include "../footer.php"; ?>
 </body>
+
 </html>
