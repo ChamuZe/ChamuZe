@@ -3,7 +3,15 @@ session_start();
 include "../classes/Servico.php";
 
 $servico = new Servico();
-$servicos = $servico->buscarTodos(); // Buscar todos os serviços do sistema
+$categoriaSelecionada = $_GET['categoria'] ?? null;
+if ($categoriaSelecionada) {
+    $servicos = $servico->buscarPorCategoria($categoriaSelecionada);
+} else {
+    $servicos = $servico->buscarTodos();
+}
+
+
+$categorias = $servico->buscarCategorias();
 ?>
 
 <!DOCTYPE html>
@@ -25,6 +33,24 @@ $servicos = $servico->buscarTodos(); // Buscar todos os serviços do sistema
 
     <main class="container flex-grow-1 py-4 vh-100">
         <h1 class="text-center mt-4 mb-4">Serviços Disponíveis</h1>
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <form method="GET" class="ms-3">
+                <div class="input-group">
+                    <select class="form-select" id="categoria" name="categoria" onchange="this.form.submit()">
+                        <option value="">Todas Categorias</option>
+                        <?php foreach ($categorias as $cat): ?>
+                            <option value="<?= $cat['categoria'] ?>" <?= ($categoriaSelecionada === $cat['categoria']) ? 'selected' : '' ?>>
+                                <?= $cat['categoria'] ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <button type="button" class="btn btn-outline-secondary"
+                        onclick="location.href='inicialPrestador.php'">
+                        Limpar
+                    </button>
+                </div>
+            </form>
+        </div>
 
         <?php if (count($servicos) < 1): ?>
             <div class="alert alert-info mt-4" role="alert">
