@@ -10,27 +10,6 @@ if ($_SESSION['usuario']['tipo_perfil'] != "administrador") {
 include "../classes/Usuario.php";
 $usuario = new Usuario();
 $usuarios = $usuario->buscarTodos("prestador");
-
-// Processamento do formulário
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id = $_POST['id_usuario'] ?? null;
-    $acao = $_POST['acao'] ?? null;
-
-    if ($id && $acao == "aceito") {
-        if ($usuario->alterar("prestador", $id, "status_avaliacao", "aprovado")) {
-            header("Location: avaliarPrestadores.php?erro=1");
-            exit;
-        }
-    } elseif ($id && $acao == "recusado") {
-        if ($usuario->deletarPorID("prestador", $id)) {
-            header("Location: avaliarPrestadores.php?erro=0");
-            exit;
-        }
-    }
-    // Se nada funcionar, redireciona com erro
-    header("Location: avaliarPrestadores.php?erro=2");
-    exit;
-}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -63,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <main class="container">
         <h1 class="text-center mt-4 mb-4">Avaliar Prestadores</h1>
 
-        <?php if (count($usuarios) < 1 || $usuarios['status_avaliacao'] == 'aprovado'): ?>
+        <?php if (count($usuarios) < 1 || $usuarios['status_valiacao'] == 'aprovado'): ?>
             <div class="alert alert-info">Nenhum prestador para avaliar.</div>
         <?php else: ?>
             <div class="row">
@@ -84,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                  style="width: 180px; height: 250px; object-fit: cover;">
                                         </div>
                                     </div>
-                                    <form method="POST">
+                                    <form method="POST" action="..\controller\admDecisaoSobPrestador.php">
                                         <input type="hidden" name="id_usuario" value="<?= $row['id_usuario'] ?>">
                                         <div class="d-flex justify-content-center gap-3">
                                             <button class="btn btn-success px-4" type="submit" name="acao" value="aceito">Aceitar</button>
