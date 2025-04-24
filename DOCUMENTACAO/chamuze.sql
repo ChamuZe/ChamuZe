@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS chamuze
 CHARACTER SET utf8mb4 
 COLLATE utf8mb4_unicode_ci;
 
-/*Usando o banco de dados*/
+
 USE chamuze;
 
 /*Criação da tabela usuario - Generalização - */
@@ -70,7 +70,7 @@ CREATE TABLE servico (
     titulo VARCHAR(255) NOT NULL,
     img_servico VARCHAR(255) NOT NULL,
     categoria VARCHAR(255) NOT NULL,
-    status_servico ENUM('aceito','disponivel') NOT NULL,
+    status_servico ENUM('aceito','disponivel') NOT NULL DEFAULT 'disponivel',
     local_servico VARCHAR(100) NOT NULL,
     preco DECIMAL(10,2) NOT NULL,
     id_solicitante INTEGER,
@@ -87,7 +87,7 @@ CREATE TABLE proposta (
 	id_solicitante INTEGER,
 	valor_proposta DECIMAL(10,2) NOT NULL,
     justificativa TEXT NOT NULL,
-    FOREIGN KEY (id_servico) REFERENCES servico(id_servico),
+    FOREIGN KEY (id_servico) REFERENCES servico(id_servico) ON DELETE CASCADE,
     FOREIGN KEY (id_solicitante) REFERENCES solicitante(id_solicitante),
     FOREIGN KEY (id_prestador) REFERENCES prestador(id_prestador)
 );

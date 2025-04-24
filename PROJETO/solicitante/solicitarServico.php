@@ -1,51 +1,56 @@
-<?php session_start();?>
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChamuZé - Solicitar Serviço</title>
-    <link rel="shortcut icon" href="imagens/chamuzeFavicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../assets/img/chamuzeFavicon.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="../assets/css/estilo.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
+
 <body class="bg-light vh-100">
 
-    <?php include "../header/header.php";?> <!-- Inclui o cabeçalho -->
+    <?php include "../header/header.php"; ?> <!-- Inclui o cabeçalho -->
 
     <main class="container d-flex flex-column justify-content-center">
         <h1 class="text-center mt-4 mb-4">Solicitar Serviço</h1>
-        <form action="../controller/solicitarServicoController.php" method="POST" enctype="multipart/form-data" class="bg-white p-4 shadow-sm rounded">
+        <form action="../controller/solicitarServicoController.php" method="POST" enctype="multipart/form-data"
+            class="bg-white p-4 shadow-sm rounded">
 
             <?php
             //Exebição dos erros
-                if (isset($_GET['erro'])){
-                    switch ($_GET['erro']){
-                        case 1:
-                            echo "<div class=\"alert alert-info\" role=\"alert\">
+            if (isset($_GET['erro'])) {
+                switch ($_GET['erro']) {
+                    case 1:
+                        echo "<div class=\"alert alert-info\" role=\"alert\">
                             Você só pode enviar arquivos JPG, JPEG ou PNG!
                             </div>";
-                            break;
-                        case 2: 
-                            echo "<div class=\"alert alert-danger\" role=\"alert\">
+                        break;
+                    case 2:
+                        echo "<div class=\"alert alert-danger\" role=\"alert\">
                             Ops, algo deu errado. O serviço não foi solicitado!
                             </div>";
-                            break;
+                        break;
                 }
             }
             ?>
-            <input type="hidden" name="id_solicitante" value="<?php echo $_SESSION['usuario']['id_usuario'];?>">
+            <input type="hidden" name="id_solicitante" value="<?php echo $_SESSION['usuario']['id_usuario']; ?>">
             <!-- Título do serviço -->
             <div class="mb-3">
                 <label for="titulo" class="form-label">Título do Serviço</label>
-                <input type="text" class="form-control" name="titulo" id="titulo" placeholder="Título do Serviço" required>
+                <input type="text" class="form-control" name="titulo" id="titulo" placeholder="Título do Serviço"
+                    required>
             </div>
 
             <!-- Descrição do serviço -->
             <div class="mb-3">
                 <label for="descricao" class="form-label">Descrição do Serviço</label>
-                <textarea class="form-control" name="descricao" id="descricao" placeholder="Descrição do serviço" rows="4" required></textarea>
+                <textarea class="form-control" name="descricao" id="descricao" placeholder="Descrição do serviço"
+                    rows="4" required></textarea>
             </div>
 
             <!-- Imagem do serviço -->
@@ -159,7 +164,8 @@
         </form>
     </main>
 
-    <?php include "../footer.php";?> <!-- Inclui o rodapé -->
+    <?php include "../footer.php"; ?> <!-- Inclui o rodapé -->
 
 </body>
+
 </html>
