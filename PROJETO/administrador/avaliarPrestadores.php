@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <main class="container">
         <h1 class="text-center mt-4 mb-4">Avaliar Prestadores</h1>
 
-        <?php if (count($usuarios) < 1 || $usuarios['status_valiacao'] == 'aprovado'): ?>
+        <?php if (count($usuarios) < 1 || $usuarios['status_avaliacao'] == 'aprovado'): ?>
             <div class="alert alert-info">Nenhum prestador para avaliar.</div>
         <?php else: ?>
             <div class="row">

@@ -39,7 +39,7 @@ if(isset($_SESSION['login'])){
                     </div>";
                  }
                  if(isset($_GET['sucesso'])){
-                    echo "<div class=\"alert alert-primary\">
+                    echo "<div class=\"alert alert-success\">
                         Cadastrado com sucesso!
                     </div>";
                  }

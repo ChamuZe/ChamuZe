@@ -19,7 +19,7 @@ if ($_SESSION['usuario']['tipo_perfil'] != "solicitante"){
     <main class="d-flex flex-column justify-content-center align-items-center vh-100 bg-light text-center">
         <h3 class="display-3 mb-4">Seu serviço doméstico a um clique de distância.</h3>
         <h3 class="mb-4">Chama o Zé!</h3>
-        <a href="solicitarServico.php" class="btn btn-warning btn-lg px-5 py-3">Solicitar Serviço</a>
+        <a href="solicitarServico.php" class="btn btn-warning" style="padding: 5px 10px; font-size: 1.2rem;">Solicitar Serviço</a>
     </main>
 
     <?php include "../footer.php";?>

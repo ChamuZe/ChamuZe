@@ -127,7 +127,7 @@ class Cadastro{
             img_rg, 
             chave_pix, 
             status_avaliacao
-        ) VALUES (?, ?, ?, ?, 'aprovado')";
+        ) VALUES (?, ?, ?, ?, 'naoverificado')";
         
         $stmt = $this->conexao->prepare($sql);
         $stmt->bind_param(
