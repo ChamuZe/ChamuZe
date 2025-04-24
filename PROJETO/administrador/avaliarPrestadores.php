@@ -10,6 +10,7 @@ if ($_SESSION['usuario']['tipo_perfil'] != "administrador") {
 include "../classes/Usuario.php";
 $usuario = new Usuario();
 $usuarios = $usuario->buscarTodos("prestador");
+$naoVerificados = array_filter($usuarios, fn($u) => $u['status_avaliacao'] == 'naoverificado');
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -20,60 +21,85 @@ $usuarios = $usuario->buscarTodos("prestador");
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
-<body class="bg-light p-4">
+<body class="bg-light">
     <?php include "../header/header.php"; ?>
-
-    <?php if (isset($_GET['erro'])): ?>
-        <?php
-            switch ($_GET['erro']) {
-                case 0:
-                    echo '<div class="alert alert-success mt-4">O Prestador foi Rejeitado.</div>';
-                    break;
-                case 1:
-                    echo '<div class="alert alert-success mt-4">O Prestador foi Aprovado.</div>';
-                    break;
-                case 2:
-                    echo '<div class="alert alert-danger mt-4">Houve algum erro.</div>';
-                    break;
-            }
-        ?>
-    <?php endif; ?>
-
-    <main class="container">
+    <main class="container py-4">
         <h1 class="text-center mt-4 mb-4">Avaliar Prestadores</h1>
 
-        <?php if (count($usuarios) < 1 || $usuarios['status_valiacao'] == 'aprovado'): ?>
-            <div class="alert alert-info">Nenhum prestador para avaliar.</div>
+        <?php if (isset($_GET['erro'])): ?>
+            <?php
+                switch ($_GET['erro']) {
+                    case 0:
+                        echo '<div class="alert alert-success alert-dismissible fade show mt-4" role="alert">
+                                O Prestador foi Cadastrado na base de dados!
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                              </div>';
+                        break;
+                    case 1:
+                        echo '<div class="alert alert-success alert-dismissible fade show mt-4" role="alert">
+                                O Prestador foi Rejeitado com sucesso e removido da base de dados!
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                              </div>';
+                        break;
+                    case 2:
+                        echo '<div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
+                                Ops, algo deu errado! Os dados não foram enviados por POST.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                              </div>';
+                        break;
+                }
+            ?>
+        <?php endif; ?>
+
+        <?php if (count($naoVerificados) < 1): ?>
+            <div class="alert alert-primary">Nenhum prestador para avaliar.</div>
         <?php else: ?>
             <div class="row">
-                <?php foreach ($usuarios as $row): ?>
-                    <?php if ($row['status_avaliacao'] == 'naoverificado'): ?>
-                        <div class="col-md-4 mb-4">
-                            <div class="card shadow p-3">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-start mb-3">
-                                        <div class="me-3">
-                                            <p class="text-muted mb-1 small"><strong>Nome:</strong> <?= $row['nome'] ?></p>
-                                            <p class="text-muted mb-1 small"><strong>Email:</strong> <?= $row['email'] ?></p>
-                                            <p class="text-muted mb-1 small"><strong>CPF:</strong> <?= $row['cpf'] ?></p>
-                                            <p class="text-muted mb-1 small"><strong>Chave do pix:</strong> <?= $row['chave_pix'] ?></p>
-                                        </div>
-                                        <div>
-                                            <img src="<?= $row['img_rg'] ?>" class="rounded" alt="Imagem do RG"
-                                                 style="width: 180px; height: 250px; object-fit: cover;">
-                                        </div>
-                                    </div>
-                                    <form method="POST" action="..\controller\admDecisaoSobPrestador.php">
-                                        <input type="hidden" name="id_usuario" value="<?= $row['id_usuario'] ?>">
-                                        <div class="d-flex justify-content-center gap-3">
-                                            <button class="btn btn-success px-4" type="submit" name="acao" value="aceito">Aceitar</button>
-                                            <button class="btn btn-danger px-4" type="submit" name="acao" value="recusado">Recusar</button>
-                                        </div>
-                                    </form>
+                <?php foreach ($naoVerificados as $row): ?>
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card shadow-lg border-0 h-100">
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush mb-3">
+                                <li class="list-group-item"><strong>Nome:</strong><?= $row['nome'] ?></li> 
+                                <li class="list-group-item"><strong>Sobrenome:</strong><?= $row['sobrenome'] ?></li> 
+                                <li class="list-group-item"><strong>E-mail:</strong><?= $row['email'] ?></li> 
+                                    <li class="list-group-item"><strong>Telefone:</strong> <?= $row['telefone'] ?></li>
+                                    <li class="list-group-item"><strong>Data de Nascimento:</strong> <?= date("d/m/Y", strtotime($row['data_nascimento'])) ?></li>
+                                    <li class="list-group-item"><strong>Gênero:</strong> <?= ucfirst($row['genero']) ?></li>
+                                    <li class="list-group-item"><strong>CPF:</strong> <?= $row['cpf'] ?></li>
+                                    <li class="list-group-item"><strong>Chave Pix:</strong> <?= $row['chave_pix'] ?></li>
+                                    <li class="list-group-item"><strong>Endereço</strong></li>
+                                    <li class="list-group-item"><strong>Logradouro:</strong><?= $row['logradouro'] ?></li>
+                                    <li class="list-group-item"><strong>Núemro da casa:</strong><?= $row['numero_casa'] ?> </li>
+                                    <li class="list-group-item"><strong>Bairro:</strong><?= $row['bairro'] ?></li>
+                                    <li class="list-group-item"><strong>Cidade:</strong><?= $row['cidade'] ?></li>
+                                    <li class="list-group-item"><strong>Estado:</strong><?= $row['estado'] ?></li>
+                                    <li class="list-group-item"><strong>CEP:</strong><?= $row['cep'] ?></li>   
+                                        
+                                        
+                                         
+                                        
+                                        
+                                    </li>
+                                </ul>
+
+                                <div class="mb-3 text-center">
+                                    <strong>Documento (RG):</strong><br>
+                                    <img src="<?= $row['img_rg'] ?>" class="img-thumbnail mt-2" alt="Imagem do RG"
+                                        style="max-height: 250px; object-fit: cover;">
                                 </div>
+
+                                <form method="POST" action="../controller/admDecisaoSobPrestador.php">
+                                    <input type="hidden" name="id_usuario" value="<?= $row['id_usuario'] ?>">
+                                    <div class="d-flex justify-content-center gap-3">
+                                        <button class="btn btn-success px-4" type="submit" name="acao" value="aceito">Aceitar</button>
+                                        <button class="btn btn-danger px-4" type="submit" name="acao" value="recusado">Recusar</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                    <?php endif; ?>
+                    </div>
+
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>

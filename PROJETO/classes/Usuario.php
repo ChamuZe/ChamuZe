@@ -7,13 +7,22 @@
         }
         public function buscarTodos($tipoUsuario){
             if ($tipoUsuario == "prestador") {
-                $sql = "SELECT * FROM usuario LEFT JOIN prestador ON usuario.id_usuario = prestador.id_prestador WHERE tipo_perfil = ?";
+                $sql = "SELECT 
+                            usuario.id_usuario, usuario.nome, usuario.sobrenome, usuario.email, usuario.cpf, usuario.telefone,
+                            usuario.nacionalidade, usuario.data_nascimento, usuario.nota_reputacao, usuario.genero,
+                            prestador.cnpj, prestador.img_rg, prestador.chave_pix, prestador.status_avaliacao,
+                            endereco.estado, endereco.cidade, endereco.bairro, endereco.logradouro, endereco.numero_casa, endereco.cep
+                        FROM usuario
+                        LEFT JOIN prestador ON usuario.id_usuario = prestador.id_prestador
+                        LEFT JOIN endereco ON usuario.id_usuario = endereco.id_usuario
+                        WHERE usuario.tipo_perfil = ?";
+                
                 $stmt = $this->connection->prepare($sql);
                 $stmt->bind_param("s", $tipoUsuario);
                 $stmt->execute();
                 $result = $stmt->get_result();
-                return $result->fetch_all(MYSQLI_ASSOC);  
-            }
+                return $result->fetch_all(MYSQLI_ASSOC);
+            }            
             else{    
                 $sql = "SELECT * FROM usuario";
                 $stmt = $this->connection->prepare($sql);

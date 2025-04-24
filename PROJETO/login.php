@@ -26,24 +26,38 @@ if(isset($_SESSION['login'])){
             <div class="col-12 col-md-5 bg-white p-5 rounded-5 shadow">
                 <h2 class="text-center mb-4">Login</h2>
                 <!-- Verificação de erros de login -->
-                 <?php
-                 if(isset($_GET['erro']) && $_GET['erro'] == '1'){
-                    echo "<div class=\"alert alert-danger\">
-                        Usuário não cadastrado na base de dados!
-                    </div>";
-                 }
+                <?php
+                switch ($_GET['erro'] ?? $_GET['sucesso'] ?? null) {
+                    case '1':
+                        echo "<div class=\"alert alert-danger\">
+                                Usuário não cadastrado na base de dados!
+                            </div>";
+                        break;
+                    
+                    case '2':
+                        echo "<div class=\"alert alert-danger\">
+                                E-mail ou senha incorretos!
+                            </div>";
+                        break;
 
-                 if(isset($_GET['erro']) && $_GET['erro'] == '2'){
-                    echo "<div class=\"alert alert-danger\">
-                        E-mail ou senha incorretos!
-                    </div>";
-                 }
-                 if(isset($_GET['sucesso'])){
-                    echo "<div class=\"alert alert-success\">
-                        Cadastrado com sucesso!
-                    </div>";
-                 }
-                 ?>
+                        case '3':
+                            echo "<div class=\"alert alert-danger\">
+                                    Seu cadastro como prestador ainda não foi validado, está em análise!
+                                </div>";
+                            break;
+
+                    case 'sucesso':
+                        echo "<div class=\"alert alert-success\">
+                                Cadastrado com sucesso!
+                            </div>";
+                        break;
+
+                    default:
+                        // Caso não haja 'erro' ou 'sucesso', não exibe nada
+                        break;
+                }
+                ?>
+
                 <form action="controller/loginController.php" method="POST">
                     <div class="mb-3">
                         <label for="email" class="form-label">E-mail</label>

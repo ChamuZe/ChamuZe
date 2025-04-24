@@ -8,13 +8,13 @@
 
         if($id && $acao == "aceito"){
             if($usuario->alterar("prestador", $id, "status_avaliacao", "aprovado")){
-                header("Location: ../administrador/avaliarPrestadores.php?erro=1");
+                header("Location: ../administrador/avaliarPrestadores.php?erro=0");
                 exit;
             }
         }
         else if($id && $acao == "recusado"){
             if($usuario->deletarPorID("prestador", $id)){
-                header("Location: ../administrador/avaliarPrestadores.php?erro=0");
+                header("Location: ../administrador/avaliarPrestadores.php?erro=1");
                 exit;
             }
         }

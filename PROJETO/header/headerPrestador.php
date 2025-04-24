@@ -10,7 +10,7 @@
         <div class="d-flex">
             <a class="btn btn-outline-warning me-2" href="../prestador/meusServicos.php">Meus Serviços</a>
             <a class="btn btn-outline-warning me-2" href="#">Bate-papo</a>
-            <a class="btn btn-warning" href="../perfilUsuario.php">Perfil</a>
+            <a class="btn btn-warning" href="../config/perfilUsuario.php">Perfil</a>
         </div>
     </div>
 </nav>
