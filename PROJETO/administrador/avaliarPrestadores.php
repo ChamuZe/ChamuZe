@@ -68,13 +68,7 @@ $naoVerificados = array_filter($usuarios, fn($u) => $u['status_avaliacao'] == 'n
                                     <li class="list-group-item"><strong>Gênero:</strong> <?= ucfirst($row['genero']) ?></li>
                                     <li class="list-group-item"><strong>CPF:</strong> <?= $row['cpf'] ?></li>
                                     <li class="list-group-item"><strong>Chave Pix:</strong> <?= $row['chave_pix'] ?></li>
-                                    <li class="list-group-item"><strong>Endereço</strong></li>
-                                    <li class="list-group-item"><strong>Logradouro:</strong><?= $row['logradouro'] ?></li>
-                                    <li class="list-group-item"><strong>Núemro da casa:</strong><?= $row['numero_casa'] ?> </li>
-                                    <li class="list-group-item"><strong>Bairro:</strong><?= $row['bairro'] ?></li>
-                                    <li class="list-group-item"><strong>Cidade:</strong><?= $row['cidade'] ?></li>
-                                    <li class="list-group-item"><strong>Estado:</strong><?= $row['estado'] ?></li>
-                                    <li class="list-group-item"><strong>CEP:</strong><?= $row['cep'] ?></li>   
+                                      
                                         
                                         
                                          
