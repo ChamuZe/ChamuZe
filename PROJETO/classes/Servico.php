@@ -106,15 +106,61 @@ class Servico
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function buscarPorSolicitanteECategoria($id_usuario, $categoria)
+    public function buscarPorRegiao($regiao)
     {
-        $sql = "SELECT * FROM servico WHERE id_solicitante = ? AND categoria = ?";
+        $sql = "SELECT * FROM servico WHERE local_servico = ?";
         $stmt = $this->conexao->prepare($sql);
-        $stmt->bind_param("is", $id_usuario, $categoria);
+        $stmt->bind_param("s", $regiao);
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function buscarRegioes()
+    {
+        $sql = "SELECT DISTINCT local_servico FROM servico";
+        $stmt = $this->conexao->prepare($sql);
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function buscarComFiltros($categoria = null, $regiao = null, $id_usuario = null)
+    {
+        $sql = "SELECT * FROM servico WHERE 1";
+        $params = [];
+        $types = '';
+
+        if ($categoria) {
+            $sql .= " AND categoria = ?";
+            $params[] = $categoria;
+            $types .= 's';
+        }
+
+        if ($regiao) {
+            $sql .= " AND local_servico = ?";
+            $params[] = $regiao;
+            $types .= 's';
+        }
+
+        if ($id_usuario) {
+            $sql .= " AND id_solicitante = ?";
+            $params[] = $id_usuario;
+            $types .= 's';
+        }
+
+        $stmt = $this->conexao->prepare($sql);
+
+        if (!empty($params)) {
+            $stmt->bind_param($types, ...$params);
+        }
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
 
     public function inserirProposta($id_servico, $id_prestador, $novo_preco, $mensagem)
     {
