@@ -104,27 +104,7 @@ class Servico
         $status_servico = "disponivel";
         $sql = "SELECT * FROM servico WHERE status_servico = ? AND categoria = ?";
         $stmt = $this->conexao->prepare($sql);
-        $stmt->bind_param("ss", $status_servico, $categoria); 
-        $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->fetch_all(MYSQLI_ASSOC);
-    }
-
-    public function buscarPorRegiao($regiao){
-        $status_servico = "disponivel";
-        $sql = "SELECT * FROM servico WHERE status_servico = ? AND local_servico = ?";
-        $stmt = $this->conexao->prepare($sql);
-        $stmt->bind_param("ss", $status_servico, $regiao); 
-        $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->fetch_all(MYSQLI_ASSOC);
-    }
-
-    public function buscarPorCategoriaeRegiao($regiao, $categoria){
-        $status_servico = "disponivel";
-        $sql = "SELECT * FROM servico WHERE status_servico = ? AND local_servico = ? AND categoria = ?";
-        $stmt = $this->conexao->prepare($sql);
-        $stmt->bind_param("sss", $status_servico, $regiao, $categoria); 
+        $stmt->bind_param("ss", $status_servico, $categoria);
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
@@ -132,13 +112,26 @@ class Servico
 
     public function buscarPorRegiao($regiao)
     {
-        $sql = "SELECT * FROM servico WHERE local_servico = ?";
+        $status_servico = "disponivel";
+        $sql = "SELECT * FROM servico WHERE status_servico = ? AND local_servico = ?";
         $stmt = $this->conexao->prepare($sql);
-        $stmt->bind_param("s", $regiao);
+        $stmt->bind_param("ss", $status_servico, $regiao);
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function buscarPorCategoriaeRegiao($regiao, $categoria)
+    {
+        $status_servico = "disponivel";
+        $sql = "SELECT * FROM servico WHERE status_servico = ? AND local_servico = ? AND categoria = ?";
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bind_param("sss", $status_servico, $regiao, $categoria);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
 
     public function buscarRegioes()
     {

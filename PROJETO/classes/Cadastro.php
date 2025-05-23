@@ -1,5 +1,6 @@
 <?php
-class Cadastro{
+class Cadastro
+{
     private $nome;
     private $sobrenome;
     private $email;
@@ -11,7 +12,7 @@ class Cadastro{
     private $genero;
     private $tipoPerfil;
     private $conexao;
-    
+
     //prestador
     private $cnpj;
     private $imgRg;
@@ -44,7 +45,7 @@ class Cadastro{
         $this->dataNascimento = $dataNascimento;
         $this->genero = $genero;
         $this->tipoPerfil = $tipoPerfil;
-        
+
 
         $this->cnpj = $cnpj;
         $this->imgRg = $imgRg;
@@ -52,7 +53,8 @@ class Cadastro{
         $this->chavePix = $chavePix;
     }
 
-    public function salvar(){
+    public function salvar()
+    {
         try {
             $this->conexao->begin_transaction();
 
@@ -69,7 +71,7 @@ class Cadastro{
                 genero, 
                 tipo_perfil
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            
+
             $stmtUsuario = $this->conexao->prepare($sqlUsuario);
             $stmtUsuario->bind_param(
                 "ssssssssss",
@@ -84,11 +86,11 @@ class Cadastro{
                 $this->genero,
                 $this->tipoPerfil
             );
-            
+
             if (!$stmtUsuario->execute()) {
                 throw new Exception("Erro ao salvar usuario: " . $stmtUsuario->error);
             }
-            
+
             $Id = $this->conexao->insert_id;
             var_dump($Id);
 
@@ -96,7 +98,7 @@ class Cadastro{
                 case 'solicitante':
                     $this->salvarSolicitante($Id);
                     break;
-                    
+
                 case 'prestador':
                     $this->salvarPrestador($Id);
                     break;
@@ -110,17 +112,19 @@ class Cadastro{
         }
     }
 
-    public function salvarSolicitante($id){
+    public function salvarSolicitante($id)
+    {
         $sql = "INSERT INTO solicitante (id_solicitante) VALUES (?)";
         $stmt = $this->conexao->prepare($sql);
         $stmt->bind_param("i", $id);
-        
+
         if (!$stmt->execute()) {
             throw new Exception("Erro ao salvar solicitante: " . $stmt->error);
         }
     }
 
-    public function salvarPrestador($id){
+    public function salvarPrestador($id)
+    {
         $sql = "INSERT INTO prestador (
             id_prestador, 
             cnpj, 
@@ -128,7 +132,7 @@ class Cadastro{
             chave_pix, 
             status_avaliacao
         ) VALUES (?, ?, ?, ?, 'naoverificado')";
-        
+
         $stmt = $this->conexao->prepare($sql);
         $stmt->bind_param(
             "isss",
@@ -137,30 +141,55 @@ class Cadastro{
             $this->imgRg,
             $this->chavePix
         );
-        
+
         if (!$stmt->execute()) {
             throw new Exception("Erro ao salvar prestador: " . $stmt->error);
         }
     }
 
-    public function buscarNoBanco(){
+    public function salvarAdmin($id)
+    {
+        $sql = "INSERT INTO prestador (
+            id_prestador, 
+            cnpj, 
+            img_rg, 
+            chave_pix, 
+            status_avaliacao
+        ) VALUES (?, ?, ?, ?, 'naoverificado')";
+
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bind_param(
+            "isss",
+            $id,
+            $this->cnpj,
+            $this->imgRg,
+            $this->chavePix
+        );
+
+        if (!$stmt->execute()) {
+            throw new Exception("Erro ao salvar prestador: " . $stmt->error);
+        }
+    }
+
+    public function buscarNoBanco()
+    {
         // Prepara a consulta SQL para buscar o e-mail e a senha do usuário
         $sql = "SELECT * FROM usuario WHERE email = ?";
-        $stmt = $this->conexao->prepare($sql); 
-    
+        $stmt = $this->conexao->prepare($sql);
+
         // Associa o parâmetro (e-mail) à consulta preparada para evitar SQL Injection
-        $stmt->bind_param("s", $this->email); 
-    
+        $stmt->bind_param("s", $this->email);
+
         // Executa a consulta preparada
         $stmt->execute();
-    
+
         // Obtém o resultado da execução da consulta
-        $resultado = $stmt->get_result(); 
-    
-        if ($resultado->num_rows > 0){
+        $resultado = $stmt->get_result();
+
+        if ($resultado->num_rows > 0) {
             // Retorna o primeiro resultado encontrado como um array associativo
             return $resultado->fetch_assoc();
-        } else{
+        } else {
             return false;
         }
     }
