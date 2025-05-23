@@ -5,16 +5,8 @@ include "../classes/Servico.php"; // Incluindo a classe Servico
 // Criando a instância da classe Servico
 $servico = new Servico();
 $categoriaSelecionada = $_GET['categoria'] ?? null;
-$regiaoSelecionada = $_GET['regiao'] ?? null;
+$servicos = $servico->buscarPorSolicitante($_SESSION['usuario']['id_usuario']);
 
-if ($categoriaSelecionada) {
-    $servicos = $servico->buscarComFiltros($categoriaSelecionada, null, $_SESSION['usuario']['id_usuario']);
-} else {
-    $servicos = $servico->buscarPorSolicitante($_SESSION['usuario']['id_usuario']);
-}
-
-$regioes = $servico->buscarRegioes();
-$categorias = $servico->buscarCategorias();
 ?>
 
 <!DOCTYPE html>
@@ -56,33 +48,6 @@ $categorias = $servico->buscarCategorias();
         ?>
 
         <h1 class="text-center mt-4 mb-4">Serviços Disponíveis</h1>
-        <div class="d-flex justify-content-center align-items-center mb-4 flex-wrap gap-3">
-            <form method="GET" class="ms-3">
-                <div class="input-group">
-                    <span class="input-group-text" id="basic-addon1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-filter" viewBox="0 0 16 16">
-                            <path
-                                d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5">
-                            </path>
-                        </svg>
-                    </span>
-                    <select class="form-select" id="categoria" name="categoria" onchange="this.form.submit()">
-                        <option value="">Todas Categorias</option>
-                        <?php foreach ($categorias as $cat): ?>
-                            <option value="<?= $cat['categoria'] ?>" <?= ($categoriaSelecionada === $cat['categoria']) ? 'selected' : '' ?>>
-                                <?= $cat['categoria'] ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                    <button type="button" class="btn btn-outline-secondary"
-                        onclick="location.href='visualizarServicos.php'">
-                        Limpar
-                    </button>
-                </div>
-            </form>
-        </div>
-
         <?php if (count($servicos) < 1): ?>
             <div class="alert alert-info mt-4" role="alert">
                 Você não possui serviços cadastrados no momento!

@@ -27,7 +27,7 @@ if(isset($_SESSION['login'])){
                 <h2 class="text-center mb-4">Login</h2>
                 <!-- Verificação de erros de login -->
                 <?php
-                switch ($_GET['erro'] ?? $_GET['sucesso'] ?? null) {
+                switch (isset($_GET['erro']) ? $_GET['erro'] : null) {
                     case '1':
                         echo "<div class=\"alert alert-danger\">
                                 Usuário não cadastrado na base de dados!
@@ -46,7 +46,7 @@ if(isset($_SESSION['login'])){
                                 </div>";
                             break;
 
-                    case 'sucesso':
+                    case '0':
                         echo "<div class=\"alert alert-success\">
                                 Cadastrado com sucesso!
                             </div>";

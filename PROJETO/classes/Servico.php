@@ -48,6 +48,18 @@ class Servico
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    // Buscar todos os serviços disponiveis
+    public function buscarTodosDisponiveis()
+    {
+        $status_servico = "disponivel";
+        $sql = "SELECT * FROM servico WHERE status_servico = ?";
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bind_param("s", $status_servico);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
     // Buscar serviço por ID
     public function buscarPorId($id_servico)
     {
@@ -87,20 +99,32 @@ class Servico
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function buscarCategorias()
+    public function buscarPorCategoria($categoria)
     {
-        $sql = "SELECT DISTINCT categoria FROM servico";
+        $status_servico = "disponivel";
+        $sql = "SELECT * FROM servico WHERE status_servico = ? AND categoria = ?";
         $stmt = $this->conexao->prepare($sql);
-
+        $stmt->bind_param("ss", $status_servico, $categoria); 
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
-    public function buscarPorCategoria($categoria)
-    {
-        $sql = "SELECT * FROM servico WHERE categoria = ?";
+
+    public function buscarPorRegiao($regiao){
+        $status_servico = "disponivel";
+        $sql = "SELECT * FROM servico WHERE status_servico = ? AND local_servico = ?";
         $stmt = $this->conexao->prepare($sql);
-        $stmt->bind_param("s", $categoria);
+        $stmt->bind_param("ss", $status_servico, $regiao); 
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function buscarPorCategoriaeRegiao($regiao, $categoria){
+        $status_servico = "disponivel";
+        $sql = "SELECT * FROM servico WHERE status_servico = ? AND local_servico = ? AND categoria = ?";
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bind_param("sss", $status_servico, $regiao, $categoria); 
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);

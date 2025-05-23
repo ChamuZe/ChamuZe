@@ -39,7 +39,7 @@ $servicosAceitos = $servico->buscarServicosPorPrestador($id_prestador);
 
 <body class="bg-light">
     <?php include "../header/headerPrestador.php"; ?>
-    <main class="container mt-4">
+    <main class="container vh-100">
         <h1 class="text-center mb-4">Meus Serviços</h1>
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
@@ -77,7 +77,7 @@ $servicosAceitos = $servico->buscarServicosPorPrestador($id_prestador);
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="col-12">
-                    <div class="alert alert-warning text-center">
+                    <div class="alert alert-primary text-center">
                         Nenhum serviço aceito até o momento.
                     </div>
                 </div>

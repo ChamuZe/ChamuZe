@@ -62,7 +62,7 @@ if (isset($_POST['btn_enviar'])) {
         header('location:../cadastro.php?erro=1&tipo_perfil='.$_POST['tipo_perfil']);
     }else{
         $cadastro->salvar();
-        header('location:../login.php?sucesso');
+        header('location:../login.php?erro=0');
     }
 
 }else{
