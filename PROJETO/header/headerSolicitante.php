@@ -8,6 +8,7 @@
 
         <!-- Botões da Navbar -->
         <div class="d-flex">
+            <a class="btn btn-outline-warning me-2" href="../solicitante/inicialSolicitante.php">Home</a>
             <a class="btn btn-outline-warning me-2" href="../solicitante/visualizarPropostas.php">Propostas</a>
             <a class="btn btn-outline-warning me-2" href="../solicitante/visualizarServicos.php">Meus Serviços</a>
             <a class="btn btn-outline-warning me-2" href="#">Bate-papo</a>
