@@ -79,7 +79,7 @@ session_start();
                         <div class="col-md-6">
                             <label for="cnpj" class="form-label">CNPJ</label>
                             <input type="text" class="form-control" id="cnpj" name="cnpj" 
-                                placeholder="Digite seu CPF" pattern="\d{14}" required>
+                                placeholder="Digite seu CNPJ" pattern="\d{14}" required>
                             <div class="form-text">Apenas números (14 dígitos)</div>
                         </div>
                         <?php endif; ?>
