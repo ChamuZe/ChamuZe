@@ -6,9 +6,6 @@ include "../classes/Servico.php"; // Incluindo a classe de serviço
 if (isset($_POST['id_servico'])) {
     $id_servico = $_POST['id_servico'];
 
-    // Criar uma instância da classe Servico
-    $servico = new Servico();
-
     // Excluir o serviço
     if ($servico->excluir($id_servico)) {
         // Após excluir, redirecionar para a página de gerenciamento
@@ -58,7 +55,6 @@ if (isset($_POST['id_servico'])) {
             <?php
             $servico = new Servico();
             $servicos = $servico->buscarTodos(); // Ajuste conforme necessário
-
             foreach ($servicos as $servico) :
             ?>
                 <div class="col">
@@ -78,7 +74,7 @@ if (isset($_POST['id_servico'])) {
 
                             <!-- Informações do Serviço -->
                             <div class="flex-grow-1">
-                                <p><strong>Solicitante:</strong> <?= ($usuario['nome']) ?></p>
+                                <p><strong>Solicitante:</strong> </p>
                                 <p><strong>Categoria:</strong> <?= $servico['categoria'] ?></p>
                                 <p><strong>Região:</strong> <?= $servico['local_servico'] ?></p>
                                 <p><strong>Preço:</strong> R$: <?= number_format($servico['preco'], 2, ',', '.') ?></p>

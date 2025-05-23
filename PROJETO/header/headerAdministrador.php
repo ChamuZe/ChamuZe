@@ -7,9 +7,9 @@
             <div class="d-flex">
                 <a class="btn btn-outline-warning me-2" href="../administrador/inicialAdministrador.php">Home</a>
                 <a class="btn btn-outline-warning me-2" href="#">Cadastrar ADM</a> <!-- Redirecionar para página de cadastro de novo adm -->
-                <a class="btn btn-outline-warning me-2" href="avaliarPrestadores.php">Avaliar Prestadores</a>
-                <a class="btn btn-outline-warning me-2" href="gerenciarServicos.php">Gerenciar Serviços</a>
-                <a class="btn btn-outline-warning me-2" href="gerenciarUsuarios.php">Gerenciar Usuários</a> <!-- A página para gerenciar usuários -->
+                <a class="btn btn-outline-warning me-2" href="../administrador/avaliarPrestadores.php">Avaliar Prestadores</a>
+                <a class="btn btn-outline-warning me-2" href="../administrador/gerenciarServicos.php">Gerenciar Serviços</a>
+                <a class="btn btn-outline-warning me-2" href="#">Gerenciar Usuários</a> <!-- A página para gerenciar usuários -->
                 <a class="btn btn-warning" href="../config/perfilUsuario.php">Perfil</a>
             </div>
         </div>
