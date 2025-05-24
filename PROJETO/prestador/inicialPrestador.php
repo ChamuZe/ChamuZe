@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "../classes/Servico.php";
+include "../helpers/biblioteca.php";
 
 $servico = new Servico();
 // Captura dos filtros da URL
@@ -33,6 +34,7 @@ if ($categoriaSelecionada && $regiaoSelecionada) {
     <link rel="shortcut icon" href="../assets/img/chamuzeFavicon.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="estiloInicialPrestador.css">
+    <link rel="stylesheet" href="../assets/css/estilo.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -144,9 +146,10 @@ if ($categoriaSelecionada && $regiaoSelecionada) {
                 }
                 ?>
                 <div class="col">
-                    <a href="verServico.php?id_servico=<?= $row['id_servico'] ?>" class="text-decoration-none text-dark">
+                    
                         <div class="card shadow-sm h-100 position-relative">
-                            <span class="stretched-link"></span>
+                            <a href="verServico.php?id_servico=<?= $row['id_servico'] ?>" class="text-decoration-none text-dark">
+                           
 
                             <div class="<?= $headerCard ?>">
                                 <h5 class="card-title mb-0"><?= $row['titulo'] ?></h5>
@@ -155,31 +158,46 @@ if ($categoriaSelecionada && $regiaoSelecionada) {
                                 </div>
                             </div>
 
-                            <div class="card-body d-flex flex-column flex-md-row">
-                                <div class="flex-shrink-0 me-md-3 mb-3 mb-md-0 text-center">
-                                    <img src="<?= $row['img_servico'] ?>" class="img-fluid rounded" alt="Imagem do Serviço"
-                                        style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                            <div class="row-1">
+                                <div class="card-body d-flex flex-column flex-md-row">
+                                    <div class="flex-shrink-0 me-md-3 mb-3 mb-md-0 text-center">
+                                        <img src="<?= $row['img_servico'] ?>" class="img-fluid rounded" alt="Imagem do Serviço"
+                                            style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <p class="text-muted mb-1 small"><strong>Categoria:</strong> <?= $row['categoria'] ?>
+                                        </p>
+                                        <p class="text-muted mb-1 small"><strong>Região:</strong> <?= $row['local_servico'] ?>
+                                        </p>
+                                        <p class="card-text small"><?= $row['descricao'] ?></p>
+                                        <p class="text-muted mb-2 small"><strong>Disponibilidade Serviço:</strong>
+                                            <?= $row['status_servico'] ?></p>
+                                        <p class="fw-bold text-success mb-0" style="font-size: 1.1em;">
+                                            <i class="bi bi-currency-dollar"></i> R$: <?= $row['preco'] ?>
+                                        </p>
+                                    </div>
+                                
                                 </div>
+                            </div>
+                            </a>
 
-                                <div class="flex-grow-1">
-                                    <p class="text-muted mb-1 small"><strong>Categoria:</strong> <?= $row['categoria'] ?>
-                                    </p>
-                                    <p class="text-muted mb-1 small"><strong>Região:</strong> <?= $row['local_servico'] ?>
-                                    </p>
-                                    <p class="card-text small"><?= $row['descricao'] ?></p>
-                                    <p class="text-muted mb-2 small"><strong>Disponibilidade Serviço:</strong>
-                                        <?= $row['status_servico'] ?></p>
-                                    <p class="fw-bold text-success mb-0" style="font-size: 1.1em;">
-                                        <i class="bi bi-currency-dollar"></i> R$: <?= $row['preco'] ?>
-                                    </p>
-                                </div>
+                            <div class="row-2">
+                                <form action="../solicitante/paginaSolicitante.php" method="GET">
+                                    <?php $solicitante = buscarSolicitanteNoBancoPeloId($row['id_solicitante']) ?>
+                                    <button class="botao-prestador-responsavel" 
+                                            style="display:<?= $stiloPrestadorResponsavel ?>" 
+                                            name="id_solicitante" 
+                                            value="<?= $row['id_solicitante'] ?>">
+                                        <strong><i class="bi bi-person-video"></i> Solicitante:</strong> <?= $solicitante['nome'] ?>
+                                    </button>
+                                </form>
                             </div>
 
                             <div class="card-footer d-flex justify-content-end">
                                 <!-- Botões futuros -->
                             </div>
                         </div>
-                    </a>
+                    
                 </div>
             <?php endforeach; ?>
         </div>

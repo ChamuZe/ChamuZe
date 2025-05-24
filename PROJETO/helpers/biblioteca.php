@@ -2,7 +2,7 @@
 include "../config/conexao.php";
 $conexao = conectaDB();
 
-function buscarPrestadorNoBanco($id){
+function buscarPrestadorNoBancoPeloId($id){
     global $conexao;
     $sql = "SELECT * FROM usuario LEFT JOIN prestador ON usuario.id_usuario = prestador.id_prestador WHERE id_usuario = ?";
     $stmt = $conexao->prepare($sql);
@@ -10,6 +10,16 @@ function buscarPrestadorNoBanco($id){
     $stmt->execute();
     $result = $stmt->get_result();
     return $result->fetch_assoc();
+}
+
+function buscarSolicitanteNoBancoPeloId($id_solicitante){
+    global $conexao;
+    $sql = "SELECT * FROM usuario LEFT JOIN solicitante ON usuario.id_usuario = solicitante.id_solicitante WHERE id_usuario = ?";
+    $stmt = $conexao->prepare($sql);
+    $stmt->bind_param('i', $id_solicitante);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    return $resultado->fetch_assoc();
 }
 
 function salvarAvaliacaoNoBanco($nota ,$id_avaliado, $id_avaliador){

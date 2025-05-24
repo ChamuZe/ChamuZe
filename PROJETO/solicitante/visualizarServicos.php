@@ -7,7 +7,6 @@ include "../classes/Servico.php"; // Incluindo a classe Servico
 $servico = new Servico();
 $categoriaSelecionada = $_GET['categoria'] ?? null;
 $servicos = $servico->buscarPorSolicitante($_SESSION['usuario']['id_usuario']);
-
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +22,6 @@ $servicos = $servico->buscarPorSolicitante($_SESSION['usuario']['id_usuario']);
     <link rel="stylesheet" href="../assets/css/estilo.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
 </head>
 
 <body class="bg-light vh-100">
@@ -84,7 +82,7 @@ $servicos = $servico->buscarPorSolicitante($_SESSION['usuario']['id_usuario']);
                     $letraCardAceito = "none";
                     $letraCardConcluido = "none";
                 }
-                ?>
+            ?>
                 <div class="col">
                     <div class="card shadow-sm h-100">
                         <!-- Cabeçalho do Card -->
@@ -117,10 +115,11 @@ $servicos = $servico->buscarPorSolicitante($_SESSION['usuario']['id_usuario']);
                                         <i class="bi bi-currency-dollar"></i> R$: <?= $row['preco'] ?>
                                     </p>
                                 </div>
+                            </div>
                         </div>
                         <div class="row-2">
                             <form action="../prestador/paginaPrestador.php" method="GET">
-                                <?php $prestador = buscarPrestadorNoBanco($row['id_prestador']) ?>
+                                <?php $prestador = buscarPrestadorNoBancoPeloId($row['id_prestador']) ?>
                                 <button class="botao-prestador-responsavel" 
                                         style="display:<?= $stiloPrestadorResponsavel ?>" 
                                         name="id_prestador" 
@@ -128,19 +127,17 @@ $servicos = $servico->buscarPorSolicitante($_SESSION['usuario']['id_usuario']);
                                     <strong><i class="bi bi-person-video"></i> Prestador responsável:</strong> <?= $prestador['nome'] ?>
                                 </button>
                             </form>
-
                         </div>
-                        </div>
-                        
 
                         <!-- Rodapé com Botões -->
                         <div class="card-footer d-flex flex-wrap justify-content-end gap-2">
                             <!-- Botão para abrir modal de avaliação -->
                             <form action="#">
-                                <button type="button" class="btn btn-warning" style="display: <?= $visibilidadeBotaoAvaliacaoPrestador?>" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                <button type="button" class="btn btn-warning" style="display: <?= $visibilidadeBotaoAvaliacaoPrestador ?>" data-bs-toggle="modal" data-bs-target="#avaliarModal<?= $row['id_servico'] ?>">
                                     <i class="bi bi-star-half"></i> Avaliar Prestador
                                 </button>
                             </form>
+
                             <form method="POST" action="updateServico.php" class="d-inline">
                                 <input type="hidden" name="id_servico" value="<?= $row['id_servico'] ?>">
                                 <button type="submit" name="btn-editar" class="btn btn-primary btn-sm">
@@ -157,57 +154,54 @@ $servicos = $servico->buscarPorSolicitante($_SESSION['usuario']['id_usuario']);
                         </div>
                     </div>
                 </div>
+
+        <!-- Modal de avaliação específico para cada serviço -->
+        <div class="modal fade" id="avaliarModal<?= $row['id_servico'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="avaliarModalLabel<?= $row['id_servico'] ?>" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="avaliarModalLabel<?= $row['id_servico'] ?>">Avaliação</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form action="../controller/avaliarPrestadorController.php" method="POST" enctype="multipart/form-data">
+                            <div class="estrelas">
+                                <label for="zero_estrela_<?= $row['id_servico'] ?>"><i class="bi bi-star-fill zero_estrela"></i></label>
+                                <input type="radio" id="zero_estrela_<?= $row['id_servico'] ?>" name="estrela" value="0" checked>
+
+                                <label for="estrela_um_<?= $row['id_servico'] ?>"><i class="bi bi-star-fill"></i></label>
+                                <input type="radio" id="estrela_um_<?= $row['id_servico'] ?>" name="estrela" value="1">
+
+                                <label for="estrela_dois_<?= $row['id_servico'] ?>"><i class="bi bi-star-fill"></i></label>
+                                <input type="radio" id="estrela_dois_<?= $row['id_servico'] ?>" name="estrela" value="2">
+
+                                <label for="estrela_tres_<?= $row['id_servico'] ?>"><i class="bi bi-star-fill"></i></label>
+                                <input type="radio" id="estrela_tres_<?= $row['id_servico'] ?>" name="estrela" value="3">
+
+                                <label for="estrela_quatro_<?= $row['id_servico'] ?>"><i class="bi bi-star-fill"></i></label>
+                                <input type="radio" id="estrela_quatro_<?= $row['id_servico'] ?>" name="estrela" value="4">
+
+                                <label for="estrela_cinco_<?= $row['id_servico'] ?>"><i class="bi bi-star-fill"></i></label>
+                                <input type="radio" id="estrela_cinco_<?= $row['id_servico'] ?>" name="estrela" value="5">
+
+                                <input type="hidden" name="id_avaliado" value="<?= $row['id_prestador'] ?>">
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+                                <button type="submit" class="btn btn-warning" value="avaliar">Avaliar</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
             <?php endforeach; ?>
         </div>
-        <!-- Modal de avaliação -->
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Avaliação</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-                <form action="../controller/avaliarPrestadorController.php" method="POST" enctype="multipart/form-data">
-                <div class="estrelas">
-                    <label for="zero_estrela"><i class="bi bi-star-fill zero_estrela"></i></label>
-                    <input type="radio" id="zero_estrela" name="estrela" value="0" checked>
-
-                    <label for="estrela_um"><i class="bi bi-star-fill"></i></label>
-                    <input type="radio" id="estrela_um" name="estrela" value="1">
-
-                    <label for="estrela_dois"><i class="bi bi-star-fill"></i></label>
-                    <input type="radio" id="estrela_dois" name="estrela" value="2">
-
-                    <label for="estrela_tres"><i class="bi bi-star-fill"></i></label>
-                    <input type="radio" id="estrela_tres" name="estrela" value="3">
-
-                    <label for="estrela_quatro"><i class="bi bi-star-fill"></i></label>
-                    <input type="radio" id="estrela_quatro" name="estrela" value="4">
-
-                    <label for="estrela_cinco"><i class="bi bi-star-fill"></i></label>
-                    <input type="radio" id="estrela_cinco" name="estrela" value="5">
-
-                    <input type="hidden" name="id_avaliado" value="<?= $row['id_prestador'] ?>">
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-warning" value="avaliar">Avaliar</button>
-                </div>
-                </form>
-            </div>
-
-            </div>
-        </div>
-        </div>
-
     </main>
-
-
     <?php include "../footer.php"; ?>
 </body>
-
 </html>

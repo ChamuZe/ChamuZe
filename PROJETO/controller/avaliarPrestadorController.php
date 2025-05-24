@@ -8,7 +8,14 @@ if (isset($_POST['estrela'])){
     $novaNota = recalcularNotaAvaliacao($_POST['id_avaliado']);
     atualizarCampoDeNotaRecalculada($novaNota, $_POST['id_avaliado']);
 
-    header("Location: ../solicitante/visualizarServicos.php?erro=-1");
+    switch ($_SESSION['usuario']['tipo_perfil']){
+        case 'prestador':
+            header("Location: ../prestador/meusServicos.php?erro=-1");
+            break;
+        case 'solicitante':
+            header("Location: ../solicitante/visualizarServicos.php?erro=-1");
+            break;
+    }
 }
 
 ?>

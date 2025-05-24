@@ -2,8 +2,8 @@
 session_start();
 include "../helpers/biblioteca.php";
 
-if(isset($_GET['id_prestador'])){
-   $prestador = buscarPrestadorNoBancoPeloId($_GET['id_prestador']); 
+if(isset($_GET['id_solicitante'])){
+   $solicitante = buscarSolicitanteNoBancoPeloId($_GET['id_solicitante']); 
 }
 ?>
 <!DOCTYPE html>
@@ -11,7 +11,7 @@ if(isset($_GET['id_prestador'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChamuZé - Página Prestador</title>
+    <title>ChamuZé - Página solicitante</title>
     <link rel="stylesheet" href="../assets/css/estrelas.css">
     <link rel="shortcut icon" href="../assets/img/chamuzeFavicon.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -30,19 +30,19 @@ include "../header/header.php";
     <div class="col-md-6 shadow-lg p-4 bg-white rounded-4 border">
         <!-- Cabeçalho -->
         <div class="d-flex align-items-center mb-4">
-            <h2 class="m-0">Perfil do Prestador</h2>
+            <h2 class="m-0">Perfil do solicitante</h2>
         </div>
-            <p><strong>Id:</strong> <?= $prestador['id_prestador']?></p>
-            <p><strong>Nome:</strong> <?= $prestador['nome']?></p>
-            <p><strong>Sobrenome:</strong> <?= $prestador['sobrenome']?></p>
-            <p><strong>E-mail:</strong> <?= $prestador['email']?></p>
-            <p><strong>Telefone:</strong> <?= $prestador['telefone']?></p>
-            <p><strong>Gênero:</strong> <?= $prestador['genero']?></p>
-            <p><strong>Data de nascimento:</strong> <?= $prestador['data_nascimento']?></p>
+            <p><strong>Id:</strong> <?= $solicitante['id_solicitante']?></p>
+            <p><strong>Nome:</strong> <?= $solicitante['nome']?></p>
+            <p><strong>Sobrenome:</strong> <?= $solicitante['sobrenome']?></p>
+            <p><strong>E-mail:</strong> <?= $solicitante['email']?></p>
+            <p><strong>Telefone:</strong> <?= $solicitante['telefone']?></p>
+            <p><strong>Gênero:</strong> <?= $solicitante['genero']?></p>
+            <p><strong>Data de nascimento:</strong> <?= $solicitante['data_nascimento']?></p>
             <p><strong>Avaliação:</strong></p>
             <div>
                 <?php
-                if ($prestador['nota_reputacao'] <= 0){
+                if ($solicitante['nota_reputacao'] <= 0){
                     echo "<div> 
                     <i class='bi bi-star-fill estrela-avaliacao-vazia'></i>
                     <i class='bi bi-star-fill estrela-avaliacao-vazia'></i>
@@ -50,7 +50,7 @@ include "../header/header.php";
                     <i class='bi bi-star-fill estrela-avaliacao-vazia'></i>
                     <i class='bi bi-star-fill estrela-avaliacao-vazia'></i>
                     </div>"; 
-                } else if($prestador['nota_reputacao'] <= 1.5){
+                } else if($solicitante['nota_reputacao'] <= 1.5){
                     echo "<div> 
                     <i class='bi bi-star-fill estrela-avaliacao-preenchida'></i>
                     <i class='bi bi-star-fill estrela-avaliacao-vazia'></i>
@@ -58,7 +58,7 @@ include "../header/header.php";
                     <i class='bi bi-star-fill estrela-avaliacao-vazia'></i>
                     <i class='bi bi-star-fill estrela-avaliacao-vazia'></i>
                     </div>"; 
-                } else if($prestador['nota_reputacao'] <= 2.5){
+                } else if($solicitante['nota_reputacao'] <= 2.5){
                     echo "<div> 
                     <i class='bi bi-star-fill estrela-avaliacao-preenchida'></i>
                     <i class='bi bi-star-fill estrela-avaliacao-preenchida'></i>
@@ -66,7 +66,7 @@ include "../header/header.php";
                     <i class='bi bi-star-fill estrela-avaliacao-vazia'></i>
                     <i class='bi bi-star-fill estrela-avaliacao-vazia'></i>
                     </div>"; 
-                } else if($prestador['nota_reputacao'] <= 3.5){
+                } else if($solicitante['nota_reputacao'] <= 3.5){
                     echo "<div> 
                     <i class='bi bi-star-fill estrela-avaliacao-preenchida'></i>
                     <i class='bi bi-star-fill estrela-avaliacao-preenchida'></i>
@@ -74,7 +74,7 @@ include "../header/header.php";
                     <i class='bi bi-star-fill estrela-avaliacao-vazia'></i>
                     <i class='bi bi-star-fill estrela-avaliacao-vazia'></i>
                     </div>"; 
-                } else if($prestador['nota_reputacao'] <= 4.5){
+                } else if($solicitante['nota_reputacao'] <= 4.5){
                     echo "<div> 
                     <i class='bi bi-star-fill estrela-avaliacao-preenchida'></i>
                     <i class='bi bi-star-fill estrela-avaliacao-preenchida'></i>
