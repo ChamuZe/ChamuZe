@@ -27,7 +27,7 @@ $servicos = $servico->buscarPorSolicitante($_SESSION['usuario']['id_usuario']);
 <body class="bg-light vh-100">
     <?php include "../header/header.php"; ?>
 
-    <main class="container flex-grow-1 py-4 vh-100">
+    <main class="container flex-grow-1 py-4">
         <?php
         if (isset($_GET['erro'])) {
             switch ($_GET['erro']) {

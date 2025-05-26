@@ -73,13 +73,23 @@ class Servico
 
     public function buscarPorSolicitante($id_usuario)
     {
-        $sql = "SELECT * FROM servico WHERE id_solicitante = ?"; // Filtrando pelo usuário
+        $sql = "SELECT * FROM servico 
+                WHERE id_solicitante = ? 
+                ORDER BY 
+                    CASE 
+                        WHEN status_servico = 'disponivel' THEN 1
+                        WHEN status_servico = 'aceito' THEN 2
+                        WHEN status_servico = 'concluido' THEN 3
+                        ELSE 4
+                    END";
+        
         $stmt = $this->conexao->prepare($sql);
         $stmt->bind_param("i", $id_usuario);
         $stmt->execute();
         $result = $stmt->get_result();
-        return $result->fetch_all(MYSQLI_ASSOC); // Retorna todos os serviços do usuário
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
+
 
     public function aceitarServico($id_servico, $id_prestador)
     {
@@ -91,13 +101,23 @@ class Servico
 
     public function buscarServicosPorPrestador($id_prestador)
     {
-        $sql = "SELECT * FROM servico WHERE id_prestador = ?";
+        $sql = "SELECT * FROM servico 
+                WHERE id_prestador = ? 
+                ORDER BY 
+                    CASE 
+                        WHEN status_servico = 'disponivel' THEN 1
+                        WHEN status_servico = 'aceito' THEN 2
+                        WHEN status_servico = 'concluido' THEN 3
+                        ELSE 4
+                    END";
+        
         $stmt = $this->conexao->prepare($sql);
         $stmt->bind_param("i", $id_prestador);
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
 
     public function buscarPorCategoria($categoria)
     {

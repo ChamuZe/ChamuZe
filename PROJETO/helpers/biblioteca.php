@@ -54,4 +54,29 @@ function atualizarCampoDeNotaRecalculada($novaMedia, $id_avaliado){
     $stmt->bind_param('di',$novaMedia, $id_avaliado);
     $stmt->execute();
 }
+
+function verificarAcesso($tipoPerfil){
+    // Verifica se o usuário está logado
+    if (!isset($_SESSION['usuario']['tipo_perfil'])) {
+        header("Location: ../sessaoExpirada.php");
+        exit();
+    }
+
+    // Verifica se o tipo de perfil bate com o permitido
+    if ($_SESSION['usuario']['tipo_perfil'] != $tipoPerfil) {
+        header("Location: ../index.php");
+        exit();
+    }
+}
+
+function marcarServicoComoConcluido($id_servico){
+    global $conexao;
+    $status_concluido = 'concluido';
+    $sql = "UPDATE servico SET status_servico = ? WHERE id_servico = ?";
+    $stmt = $conexao->prepare($sql);
+    $stmt->bind_param('si',$status_concluido, $id_servico);
+    $stmt->execute();
+}
+
+
 ?>

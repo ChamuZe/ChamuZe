@@ -1,20 +1,17 @@
 <?php
 session_start();
 
-// Verificar se é um prestador
-if ($_SESSION['usuario']['tipo_perfil'] != "prestador") {
-    header("Location: ../index.php");
-    exit();
-}
-
 include "../classes/Servico.php";
 include "../helpers/biblioteca.php";
+
+//Verificação de restrição de acesso
+verificarAcesso('prestador');
 
 $servico = new Servico();
 $id_prestador = $_SESSION['usuario']['id_usuario'];
 
 // Buscar apenas os serviços aceitos por este prestador
-$servicosAceitos = $servico->buscarServicosPorPrestador($id_prestador);
+$servicosDisponiveis = $servico->buscarServicosPorPrestador($id_prestador);
 ?>
 
 <!DOCTYPE html>
@@ -29,7 +26,7 @@ $servicosAceitos = $servico->buscarServicosPorPrestador($id_prestador);
     <link rel="stylesheet" href="../assets/css/estrelas.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="estiloMeusServicos.css" rel="stylesheet">
+    <link href="../assets/css/estiloMeusServicos.css" rel="stylesheet">
     <style>
         .card-text {
             word-wrap: break-word;
@@ -40,19 +37,80 @@ $servicosAceitos = $servico->buscarServicosPorPrestador($id_prestador);
     </style>
 </head>
 
-<body class="bg-light">
+<body class="bg-light  vh-100">
     <?php include "../header/headerPrestador.php"; ?>
-    <main class="container vh-100">
+    <main class="container min-vh-100 ">
+        <?php
+        if (isset($_GET['erro'])) {
+            switch ($_GET['erro']) {
+                case -1:
+                    echo '<div class="alert alert-success alert-dismissible fade show mt-4" role="alert">
+                            Solicitante avaliado com sucesso!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                          </div>';
+                    break;
+                case 0:
+                    echo '<div class="alert alert-success alert-dismissible fade show mt-4" role="alert">
+                            Serviço marcado como concluído com sucesso!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                          </div>';
+                    break;
+                case 1:
+                    echo '<div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
+                            Ops, algo deu errado. O serviço não foi marcado como concluído!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                          </div>';
+                    break;
+                case 2:
+                    echo '<div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
+                            Ops, algo deu errado. O solicitante não foi avaliado!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                          </div>';
+                    break;
+            }
+        }
+        ?>
         <h1 class="text-center mb-4">Meus Serviços</h1>
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
-            <?php if (count($servicosAceitos) > 0): ?>
-                <?php foreach ($servicosAceitos as $row): ?>
+            <?php if (count($servicosDisponiveis) > 0): ?>
+                <?php foreach ($servicosDisponiveis as $row): 
+                if ($row['status_servico'] == "aceito") {
+                    $heaerCard = "card-header bg-warning bg-opacity-75 d-flex justify-content-between";
+                    $letraCardAceito = "block";
+                    $letraCardConcluido = "none";
+                    $stiloPrestadorResponsavel = "block";
+                    $visibilidadeBotaoAvaliacaoPrestador = "none";
+                    $visibilidadeBotaoMarcarServicoComoConcluido = "block";
+
+                } else if ($row['status_servico'] == "concluido") {
+                    $heaerCard = "card-header bg-success bg-opacity-75 d-flex justify-content-between";
+                    $letraCardAceito = "none";
+                    $letraCardConcluido = "block";
+                    $visibilidadeBotaoAvaliacaoPrestador = "block";
+                    $stiloPrestadorResponsavel = "block";
+                    $visibilidadeBotaoMarcarServicoComoConcluido = "none";
+                    
+                } else {
+                    $heaerCard = "card-header d-flex";
+                    $letraCard = "none";
+                    $stiloPrestadorResponsavel = "none";
+                    $visibilidadeBotaoAvaliacaoPrestador = "none";
+                    $letraCardAceito = "none";
+                    $letraCardConcluido = "none";
+                }
+                    ?>
     <div class="col">
         <a href="visualizarMeusServicos.php?id_servico=<?= $row['id_servico'] ?>" class="text-decoration-none text-dark">
             <div class="card shadow-sm ">
-                <div class="card-header">
+                <div class="<?= $heaerCard?>">
                     <h5 class="card-title mb-0"><?= $row['titulo'] ?></h5>
+                        <div style="display:<?= $letraCardAceito ?>">
+                            <i class="bi bi-check-lg"></i> Serviço Aceito
+                        </div>
+                        <div style="display:<?= $letraCardConcluido ?>">
+                            <i class="bi bi-check-circle"></i> Serviço Concluído
+                        </div>
                 </div>
                 <div class="col">
                     <div class="row-1">
@@ -88,19 +146,23 @@ $servicosAceitos = $servico->buscarServicosPorPrestador($id_prestador);
                         </form>
                     </div>
                 </div>
-            </div>
         </a>
-        <div class="card card-footer">
-            <form action="#">
-                <button>Marcar como concluído</button>
-            </form>
-            <!-- Botão para abrir modal de avaliação -->
-            <form action="#">
-                <button type="button" class="btn btn-warning" style="display: <?= $visibilidadeBotaoAvaliacaoPrestador ?>" data-bs-toggle="modal" data-bs-target="#avaliarModal<?= $row['id_servico'] ?>">
-                    <i class="bi bi-star-half"></i> Avaliar Solicitante
-                </button>
-            </form>
-        </div>
+                <div class="card card-footer">
+                    <!-- Botão para marcar tarefa como concluída -->
+                    <form action="../controller/marcarServicoComoConcluido.php " method="POST" class="d-flex justify-content-end">
+                        <input type="hidden" name="id_servico" value="<?= $row['id_servico']?>">
+                        <button class="btn btn-success" style="display: <?= $visibilidadeBotaoMarcarServicoComoConcluido ?>"> <i class="bi bi-check-circle"></i> Marcar como concluído</button>
+                    </form>
+                    <!-- Botão para abrir modal de avaliação -->
+                    <form action="#" class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-warning" style="display: <?= $visibilidadeBotaoAvaliacaoPrestador ?>" data-bs-toggle="modal" data-bs-target="#avaliarModal<?= $row['id_servico'] ?>">
+                            <i class="bi bi-star-half"></i> Avaliar Solicitante
+                        </button>
+                    </form>
+                </div>
+            </div>
+        
+
 
         <!-- Modal de avaliação específico para cada serviço -->
         <div class="modal fade" id="avaliarModal<?= $row['id_servico'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="avaliarModalLabel<?= $row['id_servico'] ?>" aria-hidden="true">
