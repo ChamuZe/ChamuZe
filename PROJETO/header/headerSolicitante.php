@@ -1,3 +1,9 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$nomeUsuario = isset($_SESSION['usuario']['nome']) ? $_SESSION['usuario']['nome'] : 'Usuário';
+?>
 <header>
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
     <div class="container">
@@ -12,7 +18,11 @@
             <a class="btn btn-outline-warning me-2" href="../solicitante/visualizarPropostas.php">Propostas</a>
             <a class="btn btn-outline-warning me-2" href="../solicitante/visualizarServicos.php">Meus Serviços</a>
             <a class="btn btn-outline-warning me-2" href="#">Bate-papo</a>
-            <a class="btn btn-warning" href="../config/perfilUsuario.php">Perfil</a>
+            <a class="btn btn-warning d-flex align-items-center" href="../config/perfilUsuario.php">
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+                <i class="bi bi-person-circle me-2"></i>
+                Bem-vindo, <?= htmlspecialchars($nomeUsuario) ?>
+            </a>
         </div>
     </div>
 </nav>
