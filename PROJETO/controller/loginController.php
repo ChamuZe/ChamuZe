@@ -26,21 +26,33 @@ if (isset($_POST['btn_login'])) {
             if (isset($_SESSION['usuario']['tipo_perfil'])) {
                 switch ($_SESSION['usuario']['tipo_perfil']) {
                     case "solicitante":
-                        header('location:../solicitante/inicialSolicitante.php');
+                        echo '<script>
+                            sessionStorage.removeItem("caminhoPercorrido");
+                            window.location.href = "../solicitante/inicialSolicitante.php";
+                        </script>';
                         exit;
                         break;
                     case "prestador":
-                        header('location:../prestador/inicialPrestador.php');
+                        echo '<script>
+                            sessionStorage.removeItem("caminhoPercorrido");
+                            window.location.href = "../prestador/inicialPrestador.php";
+                        </script>';
                         exit;
                         break;
                     case "administrador":
-                        header('location:../administrador/inicialAdministrador.php');
+                        echo '<script>
+                            sessionStorage.removeItem("caminhoPercorrido");
+                            window.location.href = "../administrador/inicialAdministrador.php";
+                        </script>';
                         exit;
                         break;
                 }
             }
         } else {
-            header('location:../login.php?erro=2'); // Erro 2 caso o usuário informou os dados incorretamente
+            echo '<script>
+                sessionStorage.removeItem("caminhoPercorrido");
+                window.location.href = "../prestador/inicialPrestador.php";
+            </script>';
             exit;
         }
     }

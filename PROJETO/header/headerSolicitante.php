@@ -14,11 +14,12 @@ $nomeUsuario = isset($_SESSION['usuario']['nome']) ? $_SESSION['usuario']['nome'
 
         <!-- Botões da Navbar -->
         <div class="d-flex">
-            <a class="btn btn-outline-warning me-2" href="../solicitante/inicialSolicitante.php">Home</a>
-            <a class="btn btn-outline-warning me-2" href="../solicitante/visualizarPropostas.php">Propostas</a>
-            <a class="btn btn-outline-warning me-2" href="../solicitante/visualizarServicos.php">Meus Serviços</a>
-            <a class="btn btn-outline-warning me-2" href="../config/chatLista.php">Bate-papo</a>
-            <a class="btn btn-warning d-flex align-items-center" href="../config/perfilUsuario.php">
+            <script src="../assets/js/historico.js"></script>
+            <a class="btn btn-outline-warning me-2" href="../solicitante/inicialSolicitante.php" onclick="atualizarUrl('Home');">Home</a>
+            <a class="btn btn-outline-warning me-2" href="../solicitante/visualizarPropostas.php" onclick="atualizarUrl('Propostas');">Propostas</a>
+            <a class="btn btn-outline-warning me-2" href="../solicitante/visualizarServicos.php" onclick="atualizarUrl('meusServicos');">Meus Serviços</a>
+            <a class="btn btn-outline-warning me-2" href="../config/chatLista.php" onclick="atualizarUrl('Bate-Papo');">Bate-papo</a>
+            <a class="btn btn-warning d-flex align-items-center" href="../config/perfilUsuario.php" onclick="atualizarUrl('PerfilUsuario');">
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
                 <i class="bi bi-person-circle me-2"></i>
                 Bem-vindo, <?= htmlspecialchars($nomeUsuario) ?>

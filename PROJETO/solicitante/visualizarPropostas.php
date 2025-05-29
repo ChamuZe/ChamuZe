@@ -18,6 +18,7 @@ $propostas = $proposta->buscarPropostaPorIdSolicitante($_SESSION['usuario']['id_
     <link rel="stylesheet" href="../assets/css/estilo.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/history.js"></script>
 </head>
 
 <body class="bg-light vh-100">
