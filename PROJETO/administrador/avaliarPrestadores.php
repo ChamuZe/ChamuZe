@@ -23,7 +23,7 @@ $naoVerificados = array_filter($usuarios, fn($u) => $u['status_avaliacao'] == 'n
 </head>
 <body class="bg-light">
     <?php include "../header/header.php"; ?>
-    <main class="container py-4">
+    <main class="container py-4 vh-100">
         <h1 class="text-center mt-4 mb-4">Avaliar Prestadores</h1>
 
         <?php if (isset($_GET['erro'])): ?>
@@ -60,13 +60,15 @@ $naoVerificados = array_filter($usuarios, fn($u) => $u['status_avaliacao'] == 'n
                         <div class="card shadow-lg border-0 h-100">
                             <div class="card-body">
                                 <ul class="list-group list-group-flush mb-3">
-                                <li class="list-group-item"><strong>Nome:</strong><?= $row['nome'] ?></li> 
-                                <li class="list-group-item"><strong>Sobrenome:</strong><?= $row['sobrenome'] ?></li> 
-                                <li class="list-group-item"><strong>E-mail:</strong><?= $row['email'] ?></li> 
+                                    <li class="list-group-item"><strong>Nome:</strong> <?= $row['nome'] ?></li> 
+                                    <li class="list-group-item"><strong>Sobrenome:</strong> <?= $row['sobrenome'] ?></li> 
+                                    <li class="list-group-item"><strong>E-mail:</strong> <?= $row['email'] ?></li> 
                                     <li class="list-group-item"><strong>Telefone:</strong> <?= $row['telefone'] ?></li>
                                     <li class="list-group-item"><strong>Data de Nascimento:</strong> <?= date("d/m/Y", strtotime($row['data_nascimento'])) ?></li>
                                     <li class="list-group-item"><strong>Gênero:</strong> <?= ucfirst($row['genero']) ?></li>
+                                    <li class="list-group-item"><strong>Nacionalidade:</strong> <?= $row['nacionalidade'] ?></li>
                                     <li class="list-group-item"><strong>CPF:</strong> <?= $row['cpf'] ?></li>
+                                    <li class="list-group-item"><strong>CNPJ:</strong> <?= $row['cnpj'] ?></li>
                                     <li class="list-group-item"><strong>Chave Pix:</strong> <?= $row['chave_pix'] ?></li>
                                       
                                         

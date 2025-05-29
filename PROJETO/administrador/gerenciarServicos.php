@@ -34,7 +34,7 @@ if (isset($_POST['id_servico'])) {
 <body>
     <?php include "../header/header.php"; ?>
 
-    <div class="container">
+    <div class="container vh-100">
         <h1 class="mt-4 mb-4">Gerenciar Serviços</h1>
         <?php
         if (isset($_GET['erro'])) {
@@ -94,7 +94,7 @@ if (isset($_POST['id_servico'])) {
             <?php endforeach; ?>
         </div>
     </div>
-
+    <?php include "../footer.php"?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
