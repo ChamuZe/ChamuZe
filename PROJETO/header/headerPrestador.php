@@ -22,6 +22,11 @@ $nomeUsuario = isset($_SESSION['usuario']['nome']) ? $_SESSION['usuario']['nome'
                 <i class="bi bi-person-circle me-2"></i>
                 Bem-vindo, <?= htmlspecialchars($nomeUsuario) ?>
             </a>
+            <a class="ms-2">
+                <form method="POST" action="../controller/logOutController.php">
+                    <input type="submit" value="Sair" class="btn btn-danger btn-logout">
+                </form>
+            </a>
         </div>
     </div>
 </nav>

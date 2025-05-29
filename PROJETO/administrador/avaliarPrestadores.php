@@ -20,6 +20,7 @@ $naoVerificados = array_filter($usuarios, fn($u) => $u['status_avaliacao'] == 'n
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-light">
     <?php include "../header/header.php"; ?>
@@ -70,13 +71,6 @@ $naoVerificados = array_filter($usuarios, fn($u) => $u['status_avaliacao'] == 'n
                                     <li class="list-group-item"><strong>CPF:</strong> <?= $row['cpf'] ?></li>
                                     <li class="list-group-item"><strong>CNPJ:</strong> <?= $row['cnpj'] ?></li>
                                     <li class="list-group-item"><strong>Chave Pix:</strong> <?= $row['chave_pix'] ?></li>
-                                      
-                                        
-                                        
-                                         
-                                        
-                                        
-                                    </li>
                                 </ul>
 
                                 <div class="mb-3 text-center">
@@ -85,22 +79,51 @@ $naoVerificados = array_filter($usuarios, fn($u) => $u['status_avaliacao'] == 'n
                                         style="max-height: 250px; object-fit: cover;">
                                 </div>
 
-                                <form method="POST" action="../controller/admDecisaoSobPrestador.php">
+                                <form method="POST" action="../controller/admDecisaoSobPrestador.php" class="form-avaliacao">
                                     <input type="hidden" name="id_usuario" value="<?= $row['id_usuario'] ?>">
                                     <div class="d-flex justify-content-center gap-3">
                                         <button class="btn btn-success px-4" type="submit" name="acao" value="aceito">Aceitar</button>
-                                        <button class="btn btn-danger px-4" type="submit" name="acao" value="recusado">Recusar</button>
+                                        <button class="btn btn-danger px-4 btn-recusar" type="button" data-id="<?= $row['id_usuario'] ?>">Recusar</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
-
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
     </main>
 
     <?php include "../footer.php"; ?>
+
+    <script>
+    document.querySelectorAll('.btn-recusar').forEach(botao => {
+        botao.addEventListener('click', function () {
+            const form = this.closest('form');
+            const id = this.dataset.id;
+
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: "Essa ação irá recusar e remover o prestador da base de dados!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sim, recusar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Criar input hidden para acao = recusado
+                    const inputAcao = document.createElement('input');
+                    inputAcao.type = 'hidden';
+                    inputAcao.name = 'acao';
+                    inputAcao.value = 'recusado';
+                    form.appendChild(inputAcao);
+                    form.submit();
+                }
+            });
+        });
+    });
+    </script>
 </body>
 </html>

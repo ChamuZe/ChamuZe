@@ -35,6 +35,8 @@ if (isset($_POST['id_servico'])) {
     <link rel="shortcut icon" href="../assets/img/chamuzeFavicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/estilo.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -42,6 +44,7 @@ if (isset($_POST['id_servico'])) {
 
     <div class="container vh-100">
         <h1 class="mt-4 mb-4">Gerenciar Serviços</h1>
+
         <?php
         if (isset($_GET['erro'])) {
             switch ($_GET['erro']) {
@@ -67,20 +70,14 @@ if (isset($_POST['id_servico'])) {
                 ?>
                 <div class="col">
                     <div class="card shadow-sm h-100">
-                        <!-- Cabeçalho do Card -->
                         <div class="card-header d-flex justify-content-between">
                             <h5 class="card-title mb-0"><?= $servico['titulo'] ?></h5>
                         </div>
-
-                        <!-- Corpo do Card -->
                         <div class="card-body d-flex">
-                            <!-- Imagem do Serviço -->
                             <div class="flex-shrink-0 me-3">
                                 <img src="<?= $servico['img_servico'] ?>" class="img-fluid rounded" alt="Imagem do Serviço"
                                     style="max-width: 150px; max-height: 150px; object-fit: cover;">
                             </div>
-
-                            <!-- Informações do Serviço -->
                             <div class="flex-grow-1">
                                 <p><strong>Solicitante:</strong> <?= ($usuario['nome']) ?></p>
                                 <p><strong>Categoria:</strong> <?= $servico['categoria'] ?></p>
@@ -89,12 +86,10 @@ if (isset($_POST['id_servico'])) {
                                 <p><strong>Status:</strong> <?= $servico['status_servico'] ?></p>
                             </div>
                         </div>
-
-                        <!-- Rodapé com Botões -->
                         <div class="card-footer d-flex flex-wrap justify-content-end gap-2">
-                            <form method="POST" action="gerenciarServicos.php" class="d-inline">
+                            <form method="POST" action="gerenciarServicos.php" class="d-inline excluir-form">
                                 <input type="hidden" name="id_servico" value="<?= $servico['id_servico'] ?>">
-                                <button type="submit" class="btn btn-danger">Excluir</button>
+                                <button type="button" class="btn btn-danger btn-confirmar-exclusao">Excluir</button>
                             </form>
                         </div>
                     </div>
@@ -104,6 +99,29 @@ if (isset($_POST['id_servico'])) {
     </div>
     <?php include "../footer.php"?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script SweetAlert de confirmação -->
+    <script>
+        document.querySelectorAll('.btn-confirmar-exclusao').forEach(button => {
+            button.addEventListener('click', function () {
+                const form = this.closest('.excluir-form');
+                Swal.fire({
+                    title: 'Tem certeza?',
+                    text: "Uma vez excluído, o serviço não pode ser recuperado",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Excluir!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

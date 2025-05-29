@@ -22,6 +22,7 @@ $servicos = $servico->buscarPorSolicitante($_SESSION['usuario']['id_usuario']);
     <link rel="stylesheet" href="../assets/css/estilo.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="bg-light vh-100">
@@ -32,22 +33,31 @@ $servicos = $servico->buscarPorSolicitante($_SESSION['usuario']['id_usuario']);
         if (isset($_GET['erro'])) {
             switch ($_GET['erro']) {
                 case -1:
-                    echo '<div class="alert alert-success alert-dismissible fade show mt-4" role="alert">
-                            Prestador avaliado com sucesso!
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
-                          </div>';
+                    echo "<script>
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Sucesso!',
+                                text: 'Prestador avaliado com sucesso!'
+                            });
+                        </script>";
                     break;
                 case 0:
-                    echo '<div class="alert alert-success alert-dismissible fade show mt-4" role="alert">
-                            O serviço foi excluído com sucesso!
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
-                          </div>';
+                    echo "<script>
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Sucesso!',
+                                text: 'O serviço foi excluído com sucesso!'
+                            });
+                        </script>";
                     break;
                 case 1:
-                    echo '<div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-                            Ops, algo deu errado. O serviço não foi excluído!
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
-                          </div>';
+                    echo "<script>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Erro!',
+                                text: 'Ops, algo deu errado. O serviço não foi excluído!'
+                            });
+                        </script>";
                     break;
             }
         }
@@ -144,10 +154,11 @@ $servicos = $servico->buscarPorSolicitante($_SESSION['usuario']['id_usuario']);
                                     <i class="bi bi-pencil"></i> Editar
                                 </button>
                             </form>
-                            <form method="POST" action="../controller/deleteServicoController.php" class="d-inline">
+                            <form method="POST" action="../controller/deleteServicoController.php"
+                                id="form-excluir-<?= $row['id_servico'] ?>" class="d-inline">
                                 <input type="hidden" name="id_servico" value="<?= $row['id_servico'] ?>">
-                                <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Tem certeza que deseja excluir este serviço?')">
+                                <button type="button" class="btn btn-danger btn-sm"
+                                    onclick="confirmarExclusao(<?= $row['id_servico'] ?>)">
                                     <i class="bi bi-trash"></i> Excluir
                                 </button>
                             </form>
@@ -202,6 +213,24 @@ $servicos = $servico->buscarPorSolicitante($_SESSION['usuario']['id_usuario']);
             <?php endforeach; ?>
         </div>
     </main>
+    <script>
+        function confirmarExclusao(id) {
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: "Você não poderá reverter isso!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sim, excluir!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('form-excluir-' + id).submit();
+                }
+            });
+        }
+    </script>
     <?php include "../footer.php"; ?>
 </body>
 </html>
