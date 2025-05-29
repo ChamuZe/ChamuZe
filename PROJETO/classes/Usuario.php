@@ -64,11 +64,19 @@
                 $result2 = $stmt2->execute();
         
                 return $result1 && $result2;
-            } else {
-                $sql = "DELETE FROM usuario WHERE id_usuario = ?";
-                $stmt = $this->connection->prepare($sql);
-                $stmt->bind_param("i", $id);
-                return $stmt->execute();
+            } else if ($tipoUsuario == "solicitante"){
+
+                $sql1 = "DELETE FROM solicitante WHERE id_solicitante = ?";
+                $stmt1 = $this->connection->prepare($sql1);
+                $stmt1->bind_param("i", $id);
+                $result1 = $stmt1->execute();
+
+                $sql2 = "DELETE FROM usuario WHERE id_usuario = ?";
+                $stmt2 = $this->connection->prepare($sql2);
+                $stmt2->bind_param("i", $id);
+                $result2 = $stmt2->execute();
+
+                return $result1 && $result2;
             }
         }
             
@@ -101,7 +109,48 @@
             $stmt = $this->connection->prepare($sql);
             $stmt->bind_param('iis', $id_remetende, $id_destinatario, $mensagem);
             return $stmt->execute();
+    }
+
+        public function buscarPorEmail($email) {
+            $sql1 = "SELECT * FROM usuario WHERE email = ?";
+            $stmt1 = $this->connection->prepare($sql1);
+            $stmt1->bind_param("s", $email);
+            $stmt1->execute();
+            $result1 = $stmt1->get_result();
+            if ($result1->num_rows == 0) {
+                return null;
+            }
+            $user = $result1->fetch_assoc();
+            if ($user['tipo_perfil'] == 'prestador'){
+                $sql2 = "SELECT * FROM prestador WHERE id_prestador = ?";
+                $stmt2 = $this->connection->prepare($sql2);
+                $stmt2->bind_param("i", $user['id_usuario']);
+                $stmt2->execute();
+                $result2 = $stmt2->get_result();
+                if ($result2->num_rows == 0) {
+                    $userPrestador['cnpj'] = null;
+                    $userPrestador['img_rg'] = null;
+                    $userPrestador['chave_pix'] = null;
+                    $userPrestador['status_avaliacao'] = null;
+
+                    return $user = array_merge($user, $userPrestador);
+                }
+                $userPrestador = $result2->fetch_assoc();
+                if ($userPrestador['status_avaliacao'] == 'naoverificado') {
+                    return null;
+                }
+                else {
+                    return $user = array_merge($user, $userPrestador);
+                }
+            }
+            else if ($user['tipo_perfil'] == 'administrador') {
+                return null;
+            }
+            else {
+                return $user;
+            }
         }
     }
+
     
 ?> 

@@ -29,6 +29,7 @@ if (!$dados) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/estilo.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="bg-light">
@@ -63,13 +64,13 @@ if (!$dados) {
                             </button>
                         </form>
 
-                        <form method="GET" action="realizarProposta.php" class="d-inline">
+                        <form id="form-proposta" method="GET" action="realizarProposta.php" class="d-inline">
                             <input type="hidden" name="id_servico" value="<?= $dados['id_servico'] ?>">
-                            <button type="submit" class="btn btn-warning btn-lg"
-                                onclick="return confirm('Tem certeza que deseja realizar esta proposta?')">
+                            <button type="button" id="btn-proposta" class="btn btn-warning btn-lg">
                                 <i class="bi bi-credit-card"></i> Realizar Proposta
                             </button>
                         </form>
+
                     </div>
                 </div>
             </div>
@@ -81,6 +82,24 @@ if (!$dados) {
             </div>
         </div>
     </main>
+    <script>
+        document.getElementById("btn-proposta").addEventListener("click", function () {
+            Swal.fire({
+                title: 'Deseja realizar uma Proposta?',
+                text: "Não há garantias que o solicitante aceitará sua proposta",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#ffc107',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sim, enviar proposta',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById("form-proposta").submit();
+                }
+            });
+        });
+</script>
 
     <?php include "../footer.php"; ?>
 </body>

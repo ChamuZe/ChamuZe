@@ -2,7 +2,6 @@
 session_start();
 include "../classes/Cadastro.php";
 
-// Verifica se o formulário foi submetido
 if (isset($_POST['btn_enviar'])) {
 
     function limparInput($valor)
@@ -56,6 +55,7 @@ if (isset($_POST['btn_enviar'])) {
     var_dump($_POST);
 
     if ($_POST['tipo_perfil'] === 'prestador') {
+    if ($_POST['tipo_perfil'] === 'prestador') {
         $fotoRG = $_FILES['img_rg'];
         $extensao = pathinfo($fotoRG['name'], PATHINFO_EXTENSION);
         $extensoesPermitidas = ['jpg', 'jpeg', 'png'];
@@ -63,14 +63,13 @@ if (isset($_POST['btn_enviar'])) {
         $novoNome = uniqid() . "." . $extensao;
         $caminho = '../uploads/rg/' . $novoNome;
 
-        // Verifica se a extensão é permitida
         if (!in_array(strtolower($extensao), $extensoesPermitidas)) {
+            header('location:../cadastro.php?erro=3&tipo_perfil=' . $_POST['tipo_perfil']);
             header('location:../cadastro.php?erro=3&tipo_perfil=' . $_POST['tipo_perfil']);
             exit();
         }
-        if (move_uploaded_file($fotoRG['tmp_name'], $caminho)) {
 
-            // Salva os dados no banco
+        if (move_uploaded_file($fotoRG['tmp_name'], $caminho)) {
             $cadastro = new Cadastro(
                 $_POST['nome'],
                 $_POST['snome'],
@@ -99,9 +98,10 @@ if (isset($_POST['btn_enviar'])) {
             $_POST['telefone'],
             $_POST['datanasc'],
             $_POST['genero'],
-            $_POST['tipo_perfil'],
+            $_POST['tipo_perfil']
         );
     }
+
 
     $usuario = $cadastro->buscarNoBanco();
     $cpf = $cadastro->buscarCPF();
@@ -134,7 +134,7 @@ if (isset($_POST['btn_enviar'])) {
             header('location:../login.php?erro=0');
         }
     }
-
+}
 } else {
     if ($_POST['tipo_perfil'] === 'administrador') {
         header("location:../administrador/cadastroAdm.php");
