@@ -2,6 +2,16 @@
 include "../config/conexao.php";
 $conexao = conectaDB();
 
+function buscarUsuarioPeloId($id_usuario){
+    global $conexao;
+    $sql = "SELECT * FROM usuario WHERE id_usuario = ?";
+    $stmt = $conexao->prepare($sql);
+    $stmt->bind_param('i', $id_usuario);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    return $resultado->fetch_assoc();
+}
+
 function buscarPrestadorNoBancoPeloId($id){
     global $conexao;
     $sql = "SELECT * FROM usuario LEFT JOIN prestador ON usuario.id_usuario = prestador.id_prestador WHERE id_usuario = ?";
@@ -77,6 +87,41 @@ function marcarServicoComoConcluido($id_servico){
     $stmt->bind_param('si',$status_concluido, $id_servico);
     $stmt->execute();
 }
+
+function buscarMensagensDoChatNoBanco($id_remetente, $id_destinatario) {
+    global $conexao;
+
+    $sql = "SELECT * FROM mensagem
+            WHERE (id_remetente = ? AND id_destinatario = ?) 
+               OR (id_remetente = ? AND id_destinatario = ?)";
+    $stmt = $conexao->prepare($sql);
+    $stmt->bind_param('iiii', $id_remetente, $id_destinatario, $id_destinatario, $id_remetente);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    return $resultado->fetch_all(MYSQLI_ASSOC);
+}
+
+function buscarListaDeContatosNoBanco($id_usuario){
+    global $conexao;
+    $sql = "
+        SELECT DISTINCT id_destinatario 
+        FROM mensagem 
+        WHERE id_remetente = ?
+        
+        UNION
+        
+        SELECT DISTINCT id_remetente  
+        FROM mensagem 
+        WHERE id_destinatario = ?
+    ";
+    $stmt = $conexao->prepare($sql);
+    $stmt->bind_param('ii', $id_usuario, $id_usuario);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    return $resultado->fetch_all(MYSQLI_ASSOC);
+}
+
+
 
 
 ?>

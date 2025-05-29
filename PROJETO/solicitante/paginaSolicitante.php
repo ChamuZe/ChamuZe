@@ -23,7 +23,6 @@ if(isset($_GET['id_solicitante'])){
 <body>
 <?php
 include "../header/header.php";
-
 ?>
 
 <main class="min-vh-100 d-flex align-items-center justify-content-center bg-light">
@@ -95,8 +94,9 @@ include "../header/header.php";
             </div>
 
             <!-- Botão de conversa -->
-            <form action="#" class="mt-4 text-end">
+            <form action="../config/chat.php" class="mt-4 text-end" method="GET">
                 <button class="btn btn-primary rounded-pill p-3">
+                    <input type="hidden" value="<?= $solicitante['id_solicitante']?>" name="id_destinatario">
                     <i class="bi bi-chat-dots"></i> Conversar
                 </button>
             </form>

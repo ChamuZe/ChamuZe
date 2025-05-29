@@ -11,6 +11,8 @@ if (isset($_POST['id_servico'])) {
 
 
     $servico = new Servico();
+    $servicos = $servico->buscarTodos(); // Ajuste conforme necessário
+    $usuarioObj = new Usuario();
 
 
     if ($servico->excluir($id_servico)) {
@@ -59,9 +61,6 @@ if (isset($_POST['id_servico'])) {
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
             <?php
-            $servicos = $servico->buscarTodos(); // Ajuste conforme necessário
-            $usuarioObj = new Usuario();
-
             foreach ($servicos as $servico):
                 $usuario = $usuarioObj->buscarPorId("solicitante", $servico['id_solicitante']);
                 ?>

@@ -95,6 +95,13 @@
                 return $stmt->execute();
             }
         }
+
+        public function enviarMensagem($id_remetende, $id_destinatario, $mensagem){
+            $sql = "INSERT INTO mensagem (id_remetente, id_destinatario, mensagem) VALUES (?,?,?)";
+            $stmt = $this->connection->prepare($sql);
+            $stmt->bind_param('iis', $id_remetende, $id_destinatario, $mensagem);
+            return $stmt->execute();
+        }
     }
     
 ?> 

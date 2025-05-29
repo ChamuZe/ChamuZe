@@ -95,7 +95,8 @@ include "../header/header.php";
             </div>
 
             <!-- Botão de conversa -->
-            <form action="#" class="mt-4 text-end">
+            <form action="../config/chat.php" class="mt-4 text-end" method="GET">
+                <input type="hidden" value="<?= $prestador['id_prestador']?>" name="id_destinatario">
                 <button class="btn btn-primary rounded-pill p-3">
                     <i class="bi bi-chat-dots"></i> Conversar
                 </button>
