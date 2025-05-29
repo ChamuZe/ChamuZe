@@ -85,8 +85,8 @@ if (!$dados) {
     <script>
         document.getElementById("btn-proposta").addEventListener("click", function () {
             Swal.fire({
-                title: 'Confirmar Proposta?',
-                text: "Tem certeza que deseja realizar esta proposta?",
+                title: 'Deseja realizar uma Proposta?',
+                text: "Não há garantias que o solicitante aceitará sua proposta",
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#ffc107',

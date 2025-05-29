@@ -134,7 +134,7 @@ if (isset($_POST['btn_enviar'])) {
             header('location:../login.php?erro=0');
         }
     }
-
+}
 } else {
     if ($_POST['tipo_perfil'] === 'administrador') {
         header("location:../administrador/cadastroAdm.php");

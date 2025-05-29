@@ -5,7 +5,7 @@ include "../classes/Usuario.php";
 if ($_SESSION['usuario']['tipo_perfil'] != "administrador") {
     header("Location: ../index.php");
 }
-
+$servico = new Servico();
 if (isset($_POST['id_servico'])) {
     $id_servico = $_POST['id_servico'];
 
