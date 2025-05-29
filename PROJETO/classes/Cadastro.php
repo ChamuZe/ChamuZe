@@ -39,7 +39,6 @@ class Cadastro
         $this->email = $email;
         $this->senha = password_hash($senha, PASSWORD_DEFAULT);
         $this->cpf = $cpf;
-        //revisar o do pq ter nacionalidade...
         $this->nacionalidade = 'Brasileiro';
         $this->telefone = $telefone;
         $this->dataNascimento = $dataNascimento;
@@ -49,7 +48,6 @@ class Cadastro
 
         $this->cnpj = $cnpj;
         $this->imgRg = $imgRg;
-        //fica melhor deixar isso pra inserir na página do perfil dele...
         $this->chavePix = $chavePix;
     }
 
@@ -80,8 +78,8 @@ class Cadastro
                 $this->email,
                 $this->senha,
                 $this->cpf,
-                $this->nacionalidade,
                 $this->telefone,
+                $this->nacionalidade,
                 $this->dataNascimento,
                 $this->genero,
                 $this->tipoPerfil
@@ -147,47 +145,95 @@ class Cadastro
         }
     }
 
-    public function salvarAdmin($id)
+    public function salvarEndereco($estado, $cidade, $bairro, $logradouro, $numero_casa, $cep, $id_usuario)
     {
-        $sql = "INSERT INTO prestador (
-            id_prestador, 
-            cnpj, 
-            img_rg, 
-            chave_pix, 
-            status_avaliacao
-        ) VALUES (?, ?, ?, ?, 'naoverificado')";
+        try {
+            $this->conexao->begin_transaction();
 
-        $stmt = $this->conexao->prepare($sql);
-        $stmt->bind_param(
-            "isss",
-            $id,
-            $this->cnpj,
-            $this->imgRg,
-            $this->chavePix
-        );
+            // Insert into usuario table
+            $sqlEnd = "INSERT INTO endereco (
+                estado, 
+                cidade, 
+                bairro, 
+                logradouro, 
+                numero_casa, 
+                cep, 
+                id_usuario
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        if (!$stmt->execute()) {
-            throw new Exception("Erro ao salvar prestador: " . $stmt->error);
+            $stmtEnd = $this->conexao->prepare($sqlEnd);
+            $stmtEnd->bind_param(
+                "ssssssi",
+                $estado,
+                $cidade,
+                $bairro,
+                $logradouro,
+                $numero_casa,
+                $cep,
+                $id_usuario
+            );
+
+            if (!$stmtEnd->execute()) {
+                throw new Exception("Erro ao salvar endereco: " . $stmtEnd->error);
+            }
+
+            $this->conexao->commit();
+
+        } catch (Exception $e) {
+            $this->conexao->rollback();
+            var_dump($e->getMessage());
         }
     }
 
+
     public function buscarNoBanco()
     {
-        // Prepara a consulta SQL para buscar o e-mail e a senha do usuário
         $sql = "SELECT * FROM usuario WHERE email = ?";
         $stmt = $this->conexao->prepare($sql);
 
-        // Associa o parâmetro (e-mail) à consulta preparada para evitar SQL Injection
         $stmt->bind_param("s", $this->email);
 
-        // Executa a consulta preparada
         $stmt->execute();
 
-        // Obtém o resultado da execução da consulta
         $resultado = $stmt->get_result();
 
         if ($resultado->num_rows > 0) {
-            // Retorna o primeiro resultado encontrado como um array associativo
+            return $resultado->fetch_assoc();
+        } else {
+            return false;
+        }
+    }
+
+    public function buscarCPF()
+    {
+        $sql = "SELECT * FROM usuario WHERE cpf = ?";
+        $stmt = $this->conexao->prepare($sql);
+
+        $stmt->bind_param("s", $this->email);
+
+        $stmt->execute();
+
+        $resultado = $stmt->get_result();
+
+        if ($resultado->num_rows > 0) {
+            return $resultado->fetch_assoc();
+        } else {
+            return false;
+        }
+    }
+
+    public function buscarCNPJ()
+    {
+        $sql = "SELECT * FROM prestador WHERE cnpj = ?";
+        $stmt = $this->conexao->prepare($sql);
+
+        $stmt->bind_param("s", $this->email);
+
+        $stmt->execute();
+
+        $resultado = $stmt->get_result();
+
+        if ($resultado->num_rows > 0) {
             return $resultado->fetch_assoc();
         } else {
             return false;

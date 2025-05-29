@@ -1,159 +1,70 @@
 
-// adiciona mascara para rg
-// Cada estado têm regras e quantidades diferentes de números no registro. Por isso,
-// não há uma maneira confiável de fazer a validação do mesmo.
-function MascaraRg(v0,errChar='?'){
-    const v = v0.toUpperCase().replace(/[^\dX]/g,'');
-    return (v.length==8 || v.length==9)?
-       v.replace(/^(\d{1,2})(\d{3})(\d{3})([\dX])$/,'$1.$2.$3-$4'):
-       (errChar+v0)
-    ;
-} 
-
-//adiciona mascara de cnpj
-function MascaraCNPJ(cnpj){
-        if(mascaraInteiro(cnpj)==false){
-                event.returnValue = false;
-        }       
-        return formataCampo(cnpj, '00.000.000/0000-00', event);
-}
-
-//adiciona mascara de cep
-function MascaraCep(cep){
-                if(mascaraInteiro(cep)==false){
-                event.returnValue = false;
-        }       
-        return formataCampo(cep, '00.000-000', event);
-}
-
-//adiciona mascara de data
-function MascaraData(data){
-        if(mascaraInteiro(data)==false){
-                event.returnValue = false;
-        }       
-        return formataCampo(data, '00/00/0000', event);
-}
-
-//adiciona mascara ao telefone
-function MascaraTelefone(tel){  
-        if(mascaraInteiro(tel)==false){
-                event.returnValue = false;
-        }       
-        return formataCampo(tel, '(00) 0000-0000', event);
-}
-
-//adiciona mascara ao CPF
-function MascaraCPF(cpf){
-        if(mascaraInteiro(cpf)==false){
-                event.returnValue = false;
-        }       
-        return formataCampo(cpf, '000.000.000-00', event);
-}
-
-//valida telefone
-function ValidaTelefone(tel){
-        exp = /\(\d{2}\)\ \d{4}\-\d{4}/
-        if(!exp.test(tel.value))
-                alert('Numero de Telefone Invalido!');
-}
-
-//valida CEP
-function ValidaCep(cep){
-        exp = /\d{2}\.\d{3}\-\d{3}/
-        if(!exp.test(cep.value))
-                alert('Numero de Cep Invalido!');               
-}
-
-//valida data
-function ValidaData(data){
-        exp = /\d{2}\/\d{2}\/\d{4}/
-        if(!exp.test(data.value))
-                alert('Data Invalida!');                        
-}
-
-//valida o CPF digitado
-function ValidarCPF(Objcpf){
-        var cpf = Objcpf.value;
-        exp = /\.|\-/g
-        cpf = cpf.toString().replace( exp, "" ); 
-        var digitoDigitado = eval(cpf.charAt(9)+cpf.charAt(10));
-        var soma1=0, soma2=0;
-        var vlr =11;
-
-        for(i=0;i<9;i++){
-                soma1+=eval(cpf.charAt(i)*(vlr-1));
-                soma2+=eval(cpf.charAt(i)*vlr);
-                vlr--;
-        }       
-        soma1 = (((soma1*10)%11)==10 ? 0:((soma1*10)%11));
-        soma2=(((soma2+(2*soma1))*10)%11);
-
-        var digitoGerado=(soma1*10)+soma2;
-        if(digitoGerado!=digitoDigitado)        
-                alert('CPF Invalido!');         
-}
-
-//valida numero inteiro com mascara
-function mascaraInteiro(){
-        if (event.keyCode < 48 || event.keyCode > 57){
-                event.returnValue = false;
-                return false;
+function maskCPF(value) {
+        value = value.replace(/\D/g, '').substring(0, 11);
+        let formatted = '';
+        if (value.length > 0) {
+            formatted = value.substring(0, 3);
         }
-        return true;
-}
-
-//valida o CNPJ digitado
-function ValidarCNPJ(ObjCnpj){
-        var cnpj = ObjCnpj.value;
-        var valida = new Array(6,5,4,3,2,9,8,7,6,5,4,3,2);
-        var dig1= new Number;
-        var dig2= new Number;
-
-        exp = /\.|\-|\//g
-        cnpj = cnpj.toString().replace( exp, "" ); 
-        var digito = new Number(eval(cnpj.charAt(12)+cnpj.charAt(13)));
-
-        for(i = 0; i<valida.length; i++){
-                dig1 += (i>0? (cnpj.charAt(i-1)*valida[i]):0);  
-                dig2 += cnpj.charAt(i)*valida[i];       
+        if (value.length > 3) {
+            formatted += '.' + value.substring(3, 6);
         }
-        dig1 = (((dig1%11)<2)? 0:(11-(dig1%11)));
-        dig2 = (((dig2%11)<2)? 0:(11-(dig2%11)));
-
-        if(((dig1*10)+dig2) != digito)  
-                alert('CNPJ Invalido!');
-
-}
-
-//formata de forma generica os campos
-function formataCampo(campo, Mascara, evento) { 
-        var boleanoMascara; 
-
-        var Digitato = evento.keyCode;
-        exp = /\-|\.|\/|\(|\)| /g
-        campoSoNumeros = campo.value.toString().replace( exp, "" ); 
-
-        var posicaoCampo = 0;    
-        var NovoValorCampo="";
-        var TamanhoMascara = campoSoNumeros.length;; 
-
-        if (Digitato != 8) { // backspace 
-                for(i=0; i<= TamanhoMascara; i++) { 
-                        boleanoMascara  = ((Mascara.charAt(i) == "-") || (Mascara.charAt(i) == ".")
-                                                                || (Mascara.charAt(i) == "/")) 
-                        boleanoMascara  = boleanoMascara || ((Mascara.charAt(i) == "(") 
-                                                                || (Mascara.charAt(i) == ")") || (Mascara.charAt(i) == " ")) 
-                        if (boleanoMascara) { 
-                                NovoValorCampo += Mascara.charAt(i); 
-                                  TamanhoMascara++;
-                        }else { 
-                                NovoValorCampo += campoSoNumeros.charAt(posicaoCampo); 
-                                posicaoCampo++; 
-                          }              
-                  }      
-                campo.value = NovoValorCampo;
-                  return true; 
-        }else { 
-                return true; 
+        if (value.length > 6) {
+            formatted += '.' + value.substring(6, 9);
         }
+        if (value.length > 9) {
+            formatted += '-' + value.substring(9, 11);
+        }
+        return formatted;
+    }
+
+function maskCNPJ(value) {
+        value = value.replace(/\D/g, '').substring(0, 14);
+        let formatted = '';
+        if (value.length > 0) {
+            formatted = value.substring(0, 2);
+        }
+        if (value.length > 2) {
+            formatted += '.' + value.substring(2, 5);
+        }
+        if (value.length > 5) {
+            formatted += '.' + value.substring(5, 8);
+        }
+        if (value.length > 8) {
+            formatted += '/' + value.substring(8, 12);
+        }
+        if (value.length > 12) {
+            formatted += '-' + value.substring(12, 14);
+        }
+        return formatted;
+    }
+
+function maskTelefone(value) {
+        value = value.replace(/\D/g, '').substring(0, 11);
+        let formatted = '';
+        if (value.length > 0) {
+            formatted = '(' + value.substring(0, 2);
+        }
+        if (value.length > 2) {
+            formatted += ') ' + value.substring(2, 7);
+        }
+        if (value.length > 7) {
+            formatted += '-' + value.substring(7, 11);
+        }
+        return formatted;
 }
+
+function maskCEP(value) {
+        
+        value = value.replace(/\D/g, '');
+        
+        
+        value = value.substring(0, 8);
+        
+        
+        if (value.length > 5) {
+            value = value.substring(0, 5) + '-' + value.substring(5);
+        }
+        
+        return value;
+}
+    

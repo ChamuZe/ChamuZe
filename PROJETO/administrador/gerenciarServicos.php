@@ -1,18 +1,24 @@
 <?php
 session_start();
-include "../classes/Servico.php"; // Incluindo a classe de serviço
+include "../classes/Servico.php";
+include "../classes/Usuario.php";
+if ($_SESSION['usuario']['tipo_perfil'] != "administrador") {
+    header("Location: ../index.php");
+}
 
-// Verificar se o ID do serviço foi passado
 if (isset($_POST['id_servico'])) {
     $id_servico = $_POST['id_servico'];
 
-    // Excluir o serviço
+
+    $servico = new Servico();
+
+
     if ($servico->excluir($id_servico)) {
-        // Após excluir, redirecionar para a página de gerenciamento
+
         header("Location: gerenciarServicos.php?erro=0"); // 0 é para sucesso
         exit; // Após header, a execução deve parar
     } else {
-        // Se não foi possível excluir, redireciona com erro
+
         header("Location: gerenciarServicos.php?erro=1"); // 1 é para erro
         exit;
     }
@@ -48,15 +54,18 @@ if (isset($_POST['id_servico'])) {
             }
         }
         ?>
-        
 
-        <!-- Exibir a lista de serviços aqui -->
+
+
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
             <?php
             $servico = new Servico();
             $servicos = $servico->buscarTodos(); // Ajuste conforme necessário
-            foreach ($servicos as $servico) :
-            ?>
+            $usuarioObj = new Usuario();
+
+            foreach ($servicos as $servico):
+                $usuario = $usuarioObj->buscarPorId("solicitante", $servico['id_solicitante']);
+                ?>
                 <div class="col">
                     <div class="card shadow-sm h-100">
                         <!-- Cabeçalho do Card -->
@@ -74,7 +83,7 @@ if (isset($_POST['id_servico'])) {
 
                             <!-- Informações do Serviço -->
                             <div class="flex-grow-1">
-                                <p><strong>Solicitante:</strong> </p>
+                                <p><strong>Solicitante:</strong> <?= ($usuario['nome']) ?></p>
                                 <p><strong>Categoria:</strong> <?= $servico['categoria'] ?></p>
                                 <p><strong>Região:</strong> <?= $servico['local_servico'] ?></p>
                                 <p><strong>Preço:</strong> R$: <?= number_format($servico['preco'], 2, ',', '.') ?></p>
