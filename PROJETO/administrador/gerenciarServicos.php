@@ -32,7 +32,7 @@ if (isset($_POST['id_servico'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciar Serviços</title>
-    <!-- Seus links de CSS e outros head -->
+    <link rel="shortcut icon" href="../assets/img/chamuzeFavicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/estilo.css">
 </head>
@@ -59,7 +59,6 @@ if (isset($_POST['id_servico'])) {
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
             <?php
-            $servico = new Servico();
             $servicos = $servico->buscarTodos(); // Ajuste conforme necessário
             $usuarioObj = new Usuario();
 
