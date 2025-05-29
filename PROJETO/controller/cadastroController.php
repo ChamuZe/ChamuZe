@@ -4,12 +4,58 @@ include "../classes/Cadastro.php";
 
 // Verifica se o formulário foi submetido
 if (isset($_POST['btn_enviar'])) {
+
+    function limparInput($valor)
+    {
+        return preg_replace('/[^0-9]/', '', $valor);
+    }
+    $_POST['cpf'] = limparInput($_POST['cpf']);
+    $_POST['telefone'] = limparInput($_POST['telefone']);
+
+    if (isset($_POST['cep'])) {
+        $_POST['cep'] = limparInput($_POST['cep']);
+    }
+
+    if ($_POST['tipo_perfil'] === 'prestador') {
+        $_POST['cnpj'] = limparInput($_POST['cnpj']);
+    }
+
+    var_dump($_POST);
+
+    $senha = $_POST['senha'];
+    $erroSenha = false;
+
+    if (strlen($senha) < 8) {
+        $erroSenha = true;
+    } elseif (!preg_match('/[A-Z]/', $senha)) {
+        $erroSenha = true;
+    } elseif (!preg_match('/[a-z]/', $senha)) {
+        $erroSenha = true;
+    } elseif (!preg_match('/[!@#$%^&*()_+\-=\[\]{};\':"\\|,.<>\/?]/', $senha)) {
+        $erroSenha = true;
+    } elseif (!preg_match('/[0-9]/', $senha)) {
+        $erroSenha = true;
+    }
+
+    if ($erroSenha) {
+        if ($_POST['tipo_perfil'] === 'administrador') {
+            header('location:../administrador/cadastroAdm.php?erro=7');
+        } else {
+            header('location:../cadastro.php?erro=7&tipo_perfil=' . $_POST['tipo_perfil']);
+            exit();
+        }
+    }
+
     if ($_POST['senha'] !== $_POST['senhaConfirmada']) {
-        header('location:../cadastro.php?erro=2&tipo_perfil='.$_POST['tipo_perfil']);
+        if ($_POST['tipo_perfil'] === 'administrador') {
+            header('location:../administrador/cadastroAdm.php?erro=1');
+        } else {
+            header('location:../cadastro.php?erro=2&tipo_perfil=' . $_POST['tipo_perfil']);
+        }
     }
     var_dump($_POST);
 
-    if ($_POST['tipo_perfil'] === 'prestador'){
+    if ($_POST['tipo_perfil'] === 'prestador') {
         $fotoRG = $_FILES['img_rg'];
         $extensao = pathinfo($fotoRG['name'], PATHINFO_EXTENSION);
         $extensoesPermitidas = ['jpg', 'jpeg', 'png'];
@@ -19,7 +65,7 @@ if (isset($_POST['btn_enviar'])) {
 
         // Verifica se a extensão é permitida
         if (!in_array(strtolower($extensao), $extensoesPermitidas)) {
-            header('location:../cadastro.php?erro=3&tipo_perfil='.$_POST['tipo_perfil']);
+            header('location:../cadastro.php?erro=3&tipo_perfil=' . $_POST['tipo_perfil']);
             exit();
         }
         if (move_uploaded_file($fotoRG['tmp_name'], $caminho)) {
@@ -28,7 +74,7 @@ if (isset($_POST['btn_enviar'])) {
             $cadastro = new Cadastro(
                 $_POST['nome'],
                 $_POST['snome'],
-                $_POST['email'], 
+                $_POST['email'],
                 $_POST['senha'],
                 $_POST['cpf'],
                 $_POST['telefone'],
@@ -39,15 +85,15 @@ if (isset($_POST['btn_enviar'])) {
                 $caminho,
                 $_POST['chavepix']
             );
-        }else{
-            header('location:../cadastro.php?erro=4&tipo_perfil='.$_POST['tipo_perfil']);
+        } else {
+            header('location:../cadastro.php?erro=4&tipo_perfil=' . $_POST['tipo_perfil']);
         }
 
-    }else{
+    } else {
         $cadastro = new Cadastro(
             $_POST['nome'],
             $_POST['snome'],
-            $_POST['email'], 
+            $_POST['email'],
             $_POST['senha'],
             $_POST['cpf'],
             $_POST['telefone'],
@@ -56,16 +102,45 @@ if (isset($_POST['btn_enviar'])) {
             $_POST['tipo_perfil'],
         );
     }
-    
+
     $usuario = $cadastro->buscarNoBanco();
+    $cpf = $cadastro->buscarCPF();
+    $cnpj = $cadastro->buscarCNPJ();
     if ($usuario) {
-        header('location:../cadastro.php?erro=1&tipo_perfil='.$_POST['tipo_perfil']);
-    }else{
+        if ($_POST['tipo_perfil'] === 'administrador') {
+            header('location:../administrador/cadastroAdm.php?erro=1');
+        } else {
+            header('location:../cadastro.php?erro=1&tipo_perfil=' . $_POST['tipo_perfil']);
+        }
+
+    } elseif ($cpf) {
+        if ($_POST['tipo_perfil'] === 'administrador') {
+            header('location:../administrador/cadastroAdm.php?erro=4');
+        } else {
+            header('location:../cadastro.php?erro=5&tipo_perfil=' . $_POST['tipo_perfil']);
+        }
+    } elseif ($cnpj) {
+        header('location:../cadastro.php?erro=6&tipo_perfil=' . $_POST['tipo_perfil']);
+    } else {
         $cadastro->salvar();
-        header('location:../login.php?erro=0');
+        $usuario = $cadastro->buscarNoBanco();
+        $usuarioid = $usuario['id_usuario'];
+        if ($_POST['tipo_perfil'] != 'administrador') {
+            $cadastro->salvarEndereco($_POST['estado'], $_POST['cidade'], $_POST['bairro'], $_POST['logradouro'], $_POST['numero_casa'], $_POST['cep'], $usuarioid);
+        }
+        if ($_POST['tipo_perfil'] === 'administrador') {
+            header('location:../administrador/cadastroAdm.php?erro=3');
+        } else {
+            header('location:../login.php?erro=0');
+        }
     }
 
-}else{
-    header("cadastro.php");
+} else {
+    if ($_POST['tipo_perfil'] === 'administrador') {
+        header("location:../administrador/cadastroAdm.php");
+    } else {
+        header("cadastro.php");
+    }
+
 }
 ?>

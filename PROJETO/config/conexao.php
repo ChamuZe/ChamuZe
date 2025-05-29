@@ -1,7 +1,8 @@
 <?php
-//codigo do leo não funciona sem essa condiçao por algum motivo
+
 if (!function_exists('conectaDB')) {
-    function conectaDB() {
+    function conectaDB()
+    {
         static $conexao = null;
 
         if ($conexao === null) {
@@ -10,10 +11,21 @@ if (!function_exists('conectaDB')) {
             $user_name = 'root';
             $password = '';
 
-            $conexao = new mysqli($host, $user_name, $password, $db_name);
 
-            if ($conexao->connect_error) {
-                die("Erro na conexão com o banco de dados: " . $conexao->connect_error);
+            try {
+                $conexao = new mysqli($host, $user_name, $password, $db_name);
+            } catch (mysqli_sql_exception $e) {
+                $erro = "../config/erro_db.php";
+
+                if (!headers_sent()) {
+                    header("Location: $erro");
+                    $_POST['erro'] = $conexao->connect_error;
+                    exit;
+                } else {
+                    echo "<script>window.location.href='$erro';</script>";
+                    $_POST['erro'] = $conexao->connect_error;
+                    exit;
+                }
             }
         }
 
