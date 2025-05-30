@@ -209,7 +209,7 @@ class Cadastro
         $sql = "SELECT * FROM usuario WHERE cpf = ?";
         $stmt = $this->conexao->prepare($sql);
 
-        $stmt->bind_param("s", $this->email);
+        $stmt->bind_param("s", $this->cpf);
 
         $stmt->execute();
 
@@ -227,7 +227,7 @@ class Cadastro
         $sql = "SELECT * FROM prestador WHERE cnpj = ?";
         $stmt = $this->conexao->prepare($sql);
 
-        $stmt->bind_param("s", $this->email);
+        $stmt->bind_param("s", $this->cnpj);
 
         $stmt->execute();
 

@@ -81,6 +81,11 @@ session_start();
                             A senha não atende aos requisitos mínimos
                             </div>";
                             break;
+                        case 8:
+                            echo "<div class=\"alert alert-danger\">
+                                Nome ou sobrenome inválidos.
+                                </div>";
+                            break;
                     }
                 }
                 ?>
@@ -96,6 +101,9 @@ session_start();
                             <label for="nome" class="form-label">Nome</label>
                             <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite seu nome"
                                 required>
+                            <small id="nomeAjuda" class="form-text text-muted">
+                                No mínimo 2 caracteres, apenas letras.
+                            </small>
                         </div>
                         <div class="col-sm-6">
                             <label for="snome" class="form-label">Sobrenome</label>
@@ -293,20 +301,16 @@ session_start();
                 .then(response => response.json())
                 .then(data => {
                     if (!data.erro) {
-                        // Preenche os campos com os dados do CEP
                         document.getElementById('logradouro').value = data.logradouro;
                         document.getElementById('bairro').value = data.bairro;
                         document.getElementById('cidade').value = data.localidade;
                         document.getElementById('estado').value = data.uf;
 
-                        // Adiciona classe de sucesso
                         cepInput.classList.remove('cep-loading');
                         cepInput.classList.add('endereco-sucesso');
 
-                        // Foca no campo número
                         document.getElementById('numero_casa').focus();
                     } else {
-                        // CEP não encontrado
                         cepInput.classList.remove('cep-loading');
                         cepInput.classList.add('endereco-falha');
                         setTimeout(() => {
@@ -371,6 +375,46 @@ session_start();
                 displayError("Por favor, digite um CEP válido com 8 dígitos.");
                 return false;
             }
+
+            const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
+            if (cpf.length !== 11) {
+                event.preventDefault();
+                const cpfInput = document.getElementById('cpf');
+                cpfInput.classList.add('is-invalid');
+                displayError("Por favor, digite um CEP válido com 11 dígitos.");
+                return false;
+            }
+
+            const cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
+            if (cnpj.length !== 14) {
+                event.preventDefault();
+                const cnpjInput = document.getElementById('cnpj');
+                cnpjInput.classList.add('is-invalid');
+                displayError("Por favor, digite um CNPJ válido com 14 dígitos.");
+                return false;
+            }
+
+            const telefone = document.getElementById('telefone').value.replace(/\D/g, '');
+            if (telefone.length < 10 || telefone.length > 11) {
+                event.preventDefault();
+                const telefoneInput = document.getElementById('telefone');
+                telefoneInput.classList.add('is-invalid');
+                displayError("Por favor, digite um telefone válido com DDD.");
+                return false;
+            }
+
+            const nome = document.getElementById('nome').value.trim();
+            const snome = document.getElementById('snome').value.trim();
+            if (nome.length < 2 || snome.length < 2 || !/^[a-zA-ZÀ-ÿ\s]+$/.test(nome) || !/^[a-zA-ZÀ-ÿ\s]+$/.test(snome)) {
+                event.preventDefault();
+                const nomeInput = document.getElementById('nome');
+                const snomeInput = document.getElementById('snome');
+                nomeInput.classList.add('is-invalid');
+                snomeInput.classList.add('is-invalid');
+                displayError("Nome ou sobrenome inválidos. Por favor, verifique e tente novamente.");
+                return false;
+            }
+
 
             return true;
         }

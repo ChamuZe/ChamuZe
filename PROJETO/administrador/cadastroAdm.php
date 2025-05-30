@@ -49,6 +49,11 @@ $tipo_perfil = 'administrador';
                             A senha não atende aos requisitos mínimos
                             </div>";
                             break;
+                        case 8:
+                            echo "<div class=\"alert alert-danger\">
+                                Nome ou sobrenome inválidos.
+                                </div>";
+                            break;
                     }
                 }
                 ?>
@@ -167,6 +172,37 @@ $tipo_perfil = 'administrador';
 
             if (!validarSenha()) {
                 senha.classList.add('is-invalid');
+                return false;
+            }
+
+
+            const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
+            if (cpf.length !== 11) {
+                event.preventDefault();
+                const cpfInput = document.getElementById('cpf');
+                cpfInput.classList.add('is-invalid');
+                displayError("Por favor, digite um CEP válido com 11 dígitos.");
+                return false;
+            }
+
+            const telefone = document.getElementById('telefone').value.replace(/\D/g, '');
+            if (telefone.length < 10 || telefone.length > 11) {
+                event.preventDefault();
+                const telefoneInput = document.getElementById('telefone');
+                telefoneInput.classList.add('is-invalid');
+                displayError("Por favor, digite um telefone válido com DDD.");
+                return false;
+            }
+
+            const nome = document.getElementById('nome').value.trim();
+            const snome = document.getElementById('snome').value.trim();
+            if (nome.length < 2 || snome.length < 2 || !/^[a-zA-ZÀ-ÿ\s]+$/.test(nome) || !/^[a-zA-ZÀ-ÿ\s]+$/.test(snome)) {
+                event.preventDefault();
+                const nomeInput = document.getElementById('nome');
+                const snomeInput = document.getElementById('snome');
+                nomeInput.classList.add('is-invalid');
+                snomeInput.classList.add('is-invalid');
+                displayError("Nome ou sobrenome inválidos. Por favor, verifique e tente novamente.");
                 return false;
             }
 
