@@ -1,8 +1,11 @@
 <?php
 session_start();
-if ($_SESSION['usuario']['tipo_perfil'] != "solicitante") {
-    header("Location: ../index.php");
-}
+
+include "../helpers/biblioteca.php";
+
+verificarSessaoExpirada();
+verificarAcesso("solicitante");
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">

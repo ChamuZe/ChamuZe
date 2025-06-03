@@ -79,6 +79,19 @@ function verificarAcesso($tipoPerfil){
     }
 }
 
+function verificarSessaoExpirada(){
+    $tempoExpiracao = 432000; // 5 dias em segundos
+
+    $agora = time(); 
+
+    // Verifica se a sessão passou do tempo limite
+    if ($agora - $_SESSION['inicioSessao'] > $tempoExpiracao){
+        session_unset();     
+        session_destroy();   
+    }
+}
+
+
 function marcarServicoComoConcluido($id_servico){
     global $conexao;
     $status_concluido = 'concluido';

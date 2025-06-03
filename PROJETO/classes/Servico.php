@@ -12,11 +12,11 @@ class Servico
     }
 
     // Salvar serviço no banco
-    public function salvar($titulo, $descricao, $categoria, $regiao, $caminhoImgServico, $preco, $idSolicitante)
+    public function salvar($titulo, $descricao, $categoria, $regiao, $caminhoImgServico, $preco, $idSolicitante, $data_hora)
     {
-        $sql = "INSERT INTO servico (titulo, descricao, categoria, local_servico, img_servico, preco, id_solicitante) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO servico (titulo, descricao, categoria, local_servico, img_servico, preco, id_solicitante, data_hora) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conexao->prepare($sql);
-        $stmt->bind_param("sssssdd", $titulo, $descricao, $categoria, $regiao, $caminhoImgServico, $preco, $idSolicitante);
+        $stmt->bind_param("sssssdds", $titulo, $descricao, $categoria, $regiao, $caminhoImgServico, $preco, $idSolicitante, $data_hora);
         return $stmt->execute();
     }
 

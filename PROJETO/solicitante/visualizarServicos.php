@@ -118,10 +118,12 @@ $servicos = $servico->buscarPorSolicitante($_SESSION['usuario']['id_usuario']);
                                 <!-- Texto -->
                                 <div class="flex-grow-1">
                                     <p class="text-muted mb-1 small"><strong>Categoria:</strong> <?= $row['categoria'] ?></p>
+                                    <p class="text-muted mb-1 small"><strong>Data e hora:</strong> <?= $row['data_hora'] ?></p>
                                     <p class="text-muted mb-1 small"><strong>Região:</strong> <?= $row['local_servico'] ?></p>
                                     <p class="card-text small"><?= $row['descricao'] ?></p>
                                     <p class="text-muted mb-2 small"><strong>Disponibilidade Serviço:</strong>
                                         <?= $row['status_servico'] ?></p>
+                                        
                                     <p class="fw-bold text-success mb-0" style="font-size: 1.1em;">
                                         <i class="bi bi-currency-dollar"></i> R$: <?= $row['preco'] ?>
                                     </p>

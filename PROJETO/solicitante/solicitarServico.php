@@ -152,6 +152,12 @@
                 </select>
             </div>
 
+            <!-- Data e hora SIMULADO -->
+            <div class="mb-3">
+                <label for="img_servico" class="form-label">Data Hora do serviço</label>
+                <input type="date" class="form-control" name="data_hora" id="data_hora" required>
+            </div>
+
             <!-- Preço do serviço -->
             <div class="mb-3">
                 <label for="preco" class="form-label">Preço</label>

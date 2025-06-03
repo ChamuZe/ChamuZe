@@ -22,26 +22,24 @@ if (isset($_POST['btn_login'])) {
                 }
             }
             $_SESSION['login'] = true;
+            $_SESSION['inicioSessao'] = time();
             $_SESSION['usuario'] = $usuario;
             if (isset($_SESSION['usuario']['tipo_perfil'])) {
                 switch ($_SESSION['usuario']['tipo_perfil']) {
                     case "solicitante":
                         echo '<script>
-                            sessionStorage.removeItem("caminhoPercorrido");
                             window.location.href = "../solicitante/inicialSolicitante.php";
                         </script>';
                         exit;
                         break;
                     case "prestador":
                         echo '<script>
-                            sessionStorage.removeItem("caminhoPercorrido");
                             window.location.href = "../prestador/inicialPrestador.php";
                         </script>';
                         exit;
                         break;
                     case "administrador":
                         echo '<script>
-                            sessionStorage.removeItem("caminhoPercorrido");
                             window.location.href = "../administrador/inicialAdministrador.php";
                         </script>';
                         exit;

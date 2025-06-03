@@ -19,7 +19,7 @@
         sessionStorage.setItem("caminhoPercorrido", historico);
         
         const novaURL = caminhoAtual + "?" + historico;
-        history.replaceState(null, "", novaURL);
+        historico.replaceState(null, "", novaURL);
     }
 
     document.addEventListener("DOMContentLoaded", atualizarURLHistorico);
