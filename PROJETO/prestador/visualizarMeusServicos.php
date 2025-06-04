@@ -33,7 +33,6 @@ if (!$dadosServico || $dadosServico['id_prestador'] != $_SESSION['usuario']['id_
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="estiloPrestador2.css" rel="stylesheet">
-    <script src="../assets/js/history.js"></script>
 </head>
 <body class="bg-light">
 <?php include "../header/headerPrestador.php"; ?>
