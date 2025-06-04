@@ -2,9 +2,11 @@
 session_start();
 include "../classes/Servico.php";
 include "../classes/Usuario.php";
-if ($_SESSION['usuario']['tipo_perfil'] != "administrador") {
-    header("Location: ../index.php");
-}
+
+include "../helpers/biblioteca.php";
+
+verificarAcesso('administrador');
+verificarSessaoExpirada();
 
 $servico = new Servico();
     $servicos = $servico->buscarTodos(); // Ajuste conforme necessário
@@ -43,10 +45,10 @@ if (isset($_POST['id_servico'])) {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <?php include "../header/header.php"; ?>
 
-    <div class="container vh-100">
+    <div class="container ">
         <h1 class="mt-4 mb-4">Gerenciar Serviços</h1>
 
         <?php

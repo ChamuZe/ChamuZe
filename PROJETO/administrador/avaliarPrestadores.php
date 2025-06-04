@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+include "../helpers/biblioteca.php";
+
+verificarAcesso('administrador');
+verificarSessaoExpirada();
+
+
 // Segurança de acesso
 if ($_SESSION['usuario']['tipo_perfil'] != "administrador") {
     header("Location: ../index.php");
@@ -22,9 +28,9 @@ $naoVerificados = array_filter($usuarios, fn($u) => $u['status_avaliacao'] == 'n
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body class="bg-light">
+<body class="d-flex flex-column min-vh-100">
     <?php include "../header/header.php"; ?>
-    <main class="container py-4 vh-100">
+    <main class="container py-4">
         <h1 class="text-center mt-4 mb-4">Avaliar Prestadores</h1>
 
         <?php if (isset($_GET['erro'])): ?>

@@ -14,9 +14,9 @@ $nomeUsuario = isset($_SESSION['usuario']['nome']) ? $_SESSION['usuario']['nome'
             <div class="d-flex align-items-center">
 
                 <a class="btn btn-outline-warning me-2" href="../administrador/inicialAdministrador.php">Home</a>
-                <a class="btn btn-outline-warning me-2" href="cadastroAdm.php">Cadastrar ADM</a>
-                <a class="btn btn-outline-warning me-2" href="avaliarPrestadores.php">Avaliar Prestadores</a>
-                <a class="btn btn-outline-warning me-2" href="gerenciarServicos.php">Gerenciar Serviços</a>
+                <a class="btn btn-outline-warning me-2" href="../administrador/cadastroAdm.php">Cadastrar ADM</a>
+                <a class="btn btn-outline-warning me-2" href="../administrador/avaliarPrestadores.php">Avaliar Prestadores</a>
+                <a class="btn btn-outline-warning me-2" href="../administrador/gerenciarServicos.php">Gerenciar Serviços</a>
                 <a class="btn btn-outline-warning me-2" href="../administrador/gerenciarUsuarios.php">Gerenciar Usuários</a>
                 <a class="btn btn-warning d-flex align-items-center" href="../config/perfilUsuario.php">
                     <link rel="stylesheet"

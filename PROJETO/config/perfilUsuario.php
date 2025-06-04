@@ -1,5 +1,9 @@
 <?php
 session_start();
+
+include "../helpers/biblioteca.php";
+verificarSessaoExpirada();
+
 ?>
 
 <!DOCTYPE html>
@@ -30,11 +34,10 @@ session_start();
     </style>
 </head>
 
-<body>
-
+<body class="d-flex flex-column min-vh-100">
     <?php include "../header/header.php"; ?>
 
-    <div class="container mt-5 vh-100 d-flex justify-content-center align-items-center">
+    <div class="container mt-5 d-flex justify-content-center align-items-center">
         <div class="perfil-container w-75">
             <h2 class="text-center mb-4">Perfil do Usuário</h2>
 

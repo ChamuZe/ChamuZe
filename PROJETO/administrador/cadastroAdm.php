@@ -1,6 +1,11 @@
 <?php
 session_start();
 $tipo_perfil = 'administrador';
+
+include "../helpers/biblioteca.php";
+
+verificarAcesso('administrador');
+verificarSessaoExpirada();
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -13,7 +18,7 @@ $tipo_perfil = 'administrador';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-light d-flex flex-column" style="height: 100vh;">
+<body class="d-flex flex-column min-vh-100">
     <?php include "../header/header.php"; ?>
 
     <div class="container-fluid d-flex justify-content-center align-items-center flex-grow-1 p-3">
