@@ -51,18 +51,6 @@ CREATE TABLE endereco (
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-/*Criação da tabela pagamento */
-CREATE TABLE pagamento (
-	id_pagamento INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    data_pagamento DATE NOT NULL,
-    status_pagamento ENUM('pago','pendente') NOT NULL,
-    valor_pagamento DECIMAL(10,2) NOT NULL,
-    id_solicitante INTEGER,
-    id_prestador INTEGER,
-    FOREIGN KEY (id_solicitante) REFERENCES solicitante(id_solicitante),
-    FOREIGN KEY (id_prestador) REFERENCES prestador(id_prestador)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 /*Criação da tabela servico */
 CREATE TABLE servico (
     id_servico INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -70,7 +58,7 @@ CREATE TABLE servico (
     titulo VARCHAR(255) NOT NULL,
     img_servico VARCHAR(255) NOT NULL,
     categoria VARCHAR(255) NOT NULL,
-    status_servico ENUM('aceito','disponivel') NOT NULL,
+    status_servico ENUM('aceito','disponivel', 'concluido') NOT NULL,
     local_servico VARCHAR(100) NOT NULL,
     preco DECIMAL(10,2) NOT NULL,
     id_solicitante INTEGER,
@@ -90,4 +78,25 @@ CREATE TABLE proposta (
     FOREIGN KEY (id_servico) REFERENCES servico(id_servico),
     FOREIGN KEY (id_solicitante) REFERENCES solicitante(id_solicitante),
     FOREIGN KEY (id_prestador) REFERENCES prestador(id_prestador)
+);
+
+/*Criação da tabela mensagem*/
+CREATE TABLE mensagem (
+    id_mensagem INT AUTO_INCREMENT PRIMARY KEY,
+    id_remetente INT NOT NULL,
+    id_destinatario INT NOT NULL,
+    mensagem TEXT NOT NULL,
+    data_envio DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    FOREIGN KEY (id_remetente) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+	FOREIGN KEY (id_destinatario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
+);
+
+/*Criação da tabela avaliação*/
+CREATE TABLE avaliacao (
+    id_avaliacao INT AUTO_INCREMENT PRIMARY KEY,
+    id_avaliado INT NOT NULL,
+    id_avaliador INT NOT NULL,
+    nota INTEGER NOT NULL,
+    FOREIGN KEY (id_remetente) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+	FOREIGN KEY (id_destinatario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );

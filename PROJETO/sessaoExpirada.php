@@ -1,8 +1,10 @@
-<?php
-session_start();
-session_destroy();
-?>
 
+
+<?
+if(isset($_SESSION['login']) && $_SESSION){
+
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -25,6 +27,7 @@ session_destroy();
         <h1 class="text-warning mb-3">
           <i class="bi bi-clock-history me-2"></i> <!-- Ícone de relógio com espaço à direita -->
           <strong>Sessão Expirada</strong>
+        
         </h1>
 
         <p class="mb-4 fs-5"><strong>Sua sessão expirou por inatividade. Por favor, faça login novamente para continuar.</strong></p>
