@@ -2,9 +2,11 @@
 session_start();
 include "../helpers/biblioteca.php";
 
-if(isset($_GET['id_prestador'])){
-   $prestador = buscarPrestadorNoBancoPeloId($_GET['id_prestador']); 
-}
+include "../helpers/biblioteca.php";
+
+//Verificação de restrição de acesso
+verificarSessaoExpirada();
+verificarAcesso('prestador');
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">

@@ -42,7 +42,10 @@ $id_remetente = $_SESSION['usuario']['id_usuario'];
         <h2 class="my-4">Bate-papo</h2>
 
         <div class="card shadow mb-4">
-            <div class="card-header">Chat com usuário <?= $id_destinatario ?>
+            <?php
+            $destinatario = buscarUsuarioPeloId($id_destinatario);
+            ?> 
+            <div class="card-header">Chat com <?= $destinatario['nome'] . " " . $destinatario['sobrenome'] ?>
         </div>
 
          <div class="card-body" id="mensagens" style="height: 300px; overflow-y: auto; background-color: #f9f9f9;">

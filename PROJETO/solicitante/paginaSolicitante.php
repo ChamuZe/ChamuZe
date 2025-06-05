@@ -2,6 +2,10 @@
 session_start();
 include "../helpers/biblioteca.php";
 
+verificarSessaoExpirada();
+verificarAcesso("solicitante");
+
+
 if(isset($_GET['id_solicitante'])){
    $solicitante = buscarSolicitanteNoBancoPeloId($_GET['id_solicitante']); 
 }

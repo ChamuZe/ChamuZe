@@ -1,4 +1,10 @@
-<?php session_start(); ?>
+<?php session_start(); 
+include "../helpers/biblioteca.php";
+
+verificarSessaoExpirada();
+verificarAcesso("solicitante");
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 

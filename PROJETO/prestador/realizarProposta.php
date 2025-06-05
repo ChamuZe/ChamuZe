@@ -3,10 +3,11 @@ session_start();
 include "../classes/Proposta.php";
 include "../classes/Servico.php";
 
-if (!isset($_GET['id_servico']) || $_SESSION['usuario']['tipo_perfil'] != "prestador") {
-    header("Location: ../index.php");
-    exit();
-}
+include "../helpers/biblioteca.php";
+
+//Verificação de restrição de acesso
+verificarSessaoExpirada();
+verificarAcesso('prestador');
 
 $id_servico = $_GET['id_servico'];
 $id_prestador = $_SESSION['usuario']['id_usuario'];

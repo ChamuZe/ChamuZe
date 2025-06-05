@@ -3,6 +3,12 @@ include_once "../classes/Proposta.php";
 include_once "../classes/Servico.php";
 session_start();
 
+include "../helpers/biblioteca.php";
+
+//Verificação de restrição de acesso
+verificarSessaoExpirada();
+verificarAcesso('solicitante');
+
 $proposta = new Proposta();
 $propostas = $proposta->buscarPropostaPorIdSolicitante($_SESSION['usuario']['id_usuario']);
 ?>

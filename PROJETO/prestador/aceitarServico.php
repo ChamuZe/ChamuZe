@@ -1,10 +1,11 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipo_perfil'] != 'prestador') {
-    header("Location: ../index.php");
-    exit();
-}
+include "../helpers/biblioteca.php";
+
+//Verificação de restrição de acesso
+verificarSessaoExpirada();
+verificarAcesso('prestador');
 
 include_once "../classes/Servico.php";
 

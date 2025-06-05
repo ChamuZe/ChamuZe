@@ -2,6 +2,12 @@
 session_start();
 include "../classes/Servico.php"; // Incluindo a classe Servico
 
+include "../helpers/biblioteca.php";
+
+verificarSessaoExpirada();
+verificarAcesso("solicitante");
+
+
 $servico = new Servico();
 
 // Verificando se o ID do serviço foi passado via POST
