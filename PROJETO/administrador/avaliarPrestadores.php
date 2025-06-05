@@ -7,12 +7,6 @@ verificarAcesso('administrador');
 verificarSessaoExpirada();
 
 
-// Segurança de acesso
-if ($_SESSION['usuario']['tipo_perfil'] != "administrador") {
-    header("Location: ../index.php");
-    exit;
-}
-
 include "../classes/Usuario.php";
 $usuario = new Usuario();
 $usuarios = $usuario->buscarTodos("prestador");

@@ -36,7 +36,7 @@ $id_remetente = $_SESSION['usuario']['id_usuario'];
 </head>
 
 <body class="bg-light  vh-100">
-    <?php include "../header/headerPrestador.php"; ?>
+    <?php include "../header/header.php"; ?>
     <main class="container min-vh-100">
         <h2 class="my-4 text-center">Suas conversas</h2>
         <?php 

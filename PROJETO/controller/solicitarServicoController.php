@@ -26,7 +26,7 @@ if (isset($_POST['btn_solicitar'])) {
         if (move_uploaded_file($fotoServico['tmp_name'], $caminho)) {
 
             // Salva os dados no banco
-            $servico->salvar($_POST['titulo'], $_POST['descricao'], $_POST['categoria'], $_POST['regiao'], $caminho, $_POST['preco'], $_POST['id_solicitante'], $_POST['data_hora']);
+            $servico->salvar($_POST['titulo'], $_POST['descricao'], $_POST['categoria'], $_POST['regiao'], $caminho, $_POST['preco'], $_POST['id_solicitante']);
 
             // Redireciona para a página de visualização dos serviços
             header("Location: ../solicitante/visualizarServicos.php");

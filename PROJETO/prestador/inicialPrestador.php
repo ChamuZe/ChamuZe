@@ -5,6 +5,7 @@ include "../classes/Servico.php";
 include "../helpers/biblioteca.php";
 
 //Verificação de restrição de acesso
+verificarSessaoExpirada();
 verificarAcesso('prestador');
 
 
@@ -43,10 +44,10 @@ if ($categoriaSelecionada && $regiaoSelecionada) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
-<body class="bg-light  vh-100">
+<body class="d-flex flex-column min-vh-100">
     <?php include "../header/header.php"; ?>
 
-    <main class="container  py-5 min-vh-100 ">
+    <main class="container  py-5">
         <h1 class="text-center mt-4 mb-4">Serviços Disponíveis</h1>
         <div class="mb-3">
             <form action="" method="GET" class="filtrod-flex flex-row">

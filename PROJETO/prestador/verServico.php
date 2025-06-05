@@ -1,6 +1,12 @@
 <?php
 session_start();
 include "../classes/Servico.php";
+include "../helpers/biblioteca.php";
+
+//Verificação de restrição de acesso
+verificarSessaoExpirada();
+verificarAcesso('prestador');
+
 
 if (!isset($_GET['id_servico'])) {
     header("Location: inicialPrestador.php");
@@ -28,10 +34,12 @@ if (!$dados) {
     <link rel="shortcut icon" href="../assets/img/chamuzeFavicon.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/estilo.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 </head>
 
-<body class="bg-light">
+<body class="d-flex flex-column min-vh-100">
     <?php include "../header/header.php"; ?>
 
     <main class="container my-5">

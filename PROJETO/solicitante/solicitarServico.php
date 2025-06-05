@@ -63,9 +63,21 @@
             <div class="mb-3">
                 <label for="categoria" class="form-label">Categoria</label>
                 <select class="form-select" name="categoria" id="categoria">
-                    <option value="construcao">Construção</option>
-                    <option value="encanamento">Encanamento</option>
+                    <option value="null">Todas as categorias</option>
                     <option value="jardinagem">Jardinagem</option>
+                    <option value="limpeza">Limpeza</option>
+                    <option value="eletricidade">Elétrica</option>
+                    <option value="encanamento">Encanamento</option>
+                    <option value="pintura">Pintura</option>
+                    <option value="construcao">Construção</option>
+                    <option value="montagem_moveis">Montagem de Móveis</option>
+                    <option value="cuidado_idosos">Cuidado de Idosos</option>
+                    <option value="cuidado_infantil">Cuidado Infantil</option>
+                    <option value="lavagem">Lavagem de Roupas</option>
+                    <option value="passadoria">Passadoria</option>
+                    <option value="cozinha">Cozinha</option>
+                    <option value="cuidados_animais">Cuidados com Animais</option>
+                    <option value="outros">Outros</option>
                 </select>
             </div>
 
@@ -149,12 +161,6 @@
                     <option value="vista_alegre">Vista Alegre</option>
                     <option value="xaxim">Xaxim</option>
                 </select>
-            </div>
-
-            <!-- Data e hora SIMULADO -->
-            <div class="mb-3">
-                <label for="img_servico" class="form-label">Data Hora do serviço</label>
-                <input type="date" class="form-control" name="data_hora" id="data_hora" required>
             </div>
 
             <!-- Preço do serviço -->

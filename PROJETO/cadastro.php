@@ -381,7 +381,7 @@ session_start();
                 event.preventDefault();
                 const cpfInput = document.getElementById('cpf');
                 cpfInput.classList.add('is-invalid');
-                displayError("Por favor, digite um CEP válido com 11 dígitos.");
+                displayError("Por favor, digite um CPF válido com 11 dígitos.");
                 return false;
             }
 

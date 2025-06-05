@@ -3,6 +3,10 @@ session_start();
 include "../helpers/biblioteca.php";
 include "../classes/Servico.php"; // Incluindo a classe Servico
 
+//Verificação de restrição de acesso
+verificarSessaoExpirada();
+verificarAcesso('solicitante');
+
 // Criando a instância da classe Servico
 $servico = new Servico();
 $categoriaSelecionada = $_GET['categoria'] ?? null;
@@ -25,7 +29,7 @@ $servicos = $servico->buscarPorSolicitante($_SESSION['usuario']['id_usuario']);
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-<body class="bg-light vh-100">
+<body class="d-flex flex-column min-vh-100">
     <?php include "../header/header.php"; ?>
 
     <main class="container flex-grow-1 py-4">
@@ -117,7 +121,6 @@ $servicos = $servico->buscarPorSolicitante($_SESSION['usuario']['id_usuario']);
                                 <!-- Texto -->
                                 <div class="flex-grow-1">
                                     <p class="text-muted mb-1 small"><strong>Categoria:</strong> <?= $row['categoria'] ?></p>
-                                    <p class="text-muted mb-1 small"><strong>Data e hora:</strong> <?= $row['data_hora'] ?></p>
                                     <p class="text-muted mb-1 small"><strong>Região:</strong> <?= $row['local_servico'] ?></p>
                                     <p class="card-text small"><?= $row['descricao'] ?></p>
                                     <p class="text-muted mb-2 small"><strong>Disponibilidade Serviço:</strong>

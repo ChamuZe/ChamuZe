@@ -101,10 +101,10 @@ $propostas = $proposta->buscarPropostaPorIdSolicitante($_SESSION['usuario']['id_
                             </form>
                             <form method="POST" action="../controller/deletePropostaController.php" class="d-inline">
                                 <input type="hidden" name="id_proposta" value="<?= $propostaRow['id_proposta'] ?>">
-                                <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Tem certeza que deseja excluir esta proposta?')">
+                                <button type="submit" class="btn btn-danger btn-sm">
                                     <i class="bi bi-trash"></i> Excluir
                                 </button>
+
                             </form>
                         </div>
                     </div>
@@ -123,5 +123,31 @@ $propostas = $proposta->buscarPropostaPorIdSolicitante($_SESSION['usuario']['id_
 
     <?php include "../footer.php"; ?>
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+document.querySelectorAll('form[action="../controller/deletePropostaController.php"]').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); // impede o envio padrão
+        
+        Swal.fire({
+            title: 'Tem certeza?',
+            text: "Deseja realmente excluir esta proposta?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Sim, excluir',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit(); // envia o formulário se confirmado
+            }
+        });
+    });
+});
+</script>
+
 
 </html>
